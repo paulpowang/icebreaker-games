@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>抽一張｜破冰遊戲 Icebreaker Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF4F1; --surface:#FFFFFF; --ink:#1D2B33; --muted:#5B6B70;
+  --teal:#1F7A72; --mango:#F2B134; --guava:#E86A6A; --line:#C9DED8;
+  --slip:#FFF8E6; --slip-ink:#2B2416;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#12201F; --surface:#1B2D2B; --ink:#E6F0EE; --muted:#9DB2AE;
+    --teal:#4CC2B4; --mango:#F5C25A; --guava:#F08A84; --line:#2C4542;
+    --slip:#2A2618; --slip-ink:#F6EBCB; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12201F; --surface:#1B2D2B; --ink:#E6F0EE; --muted:#9DB2AE;
+  --teal:#4CC2B4; --mango:#F5C25A; --guava:#F08A84; --line:#2C4542;
+  --slip:#2A2618; --slip-ink:#F6EBCB; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.6;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:560px;margin:0 auto;padding:16px 18px 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.brand{font-family:"Huninn","Noto Sans TC",sans-serif;font-size:1.25rem;background:none;border:0;color:var(--ink);padding:6px 0;cursor:pointer}
+.toggle{font:inherit;font-size:.85rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.toggle[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+h1,h2{font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;margin:0}
+h1{font-size:2.6rem;line-height:1.15;margin:18px 0 6px}
+h2{font-size:1.7rem;line-height:1.2}
+.en{display:block;font-size:.78em;color:var(--muted);font-family:system-ui,sans-serif;line-height:1.35;margin-top:2px}
+.lead{color:var(--muted);margin:0 0 22px}
+.games{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game{text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;min-height:112px;display:flex;flex-direction:column;gap:4px}
+.game .ico{font-size:1.6rem;line-height:1}
+.game b{font-family:"Huninn","Noto Sans TC",sans-serif;font-weight:400;font-size:1.15rem}
+.game small{color:var(--muted);font-size:.8rem;line-height:1.4}
+.game.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;gap:12px}
+.tag{display:inline-block;font-size:.7rem;background:var(--mango);color:#3A2A00;border-radius:6px;padding:1px 7px;margin-left:4px;vertical-align:2px}
+.back{font:inherit;background:none;border:0;color:var(--teal);padding:8px 0;cursor:pointer;font-weight:500}
+.howto{background:var(--surface);border-left:4px solid var(--mango);border-radius:0 10px 10px 0;padding:10px 14px;margin:14px 0;font-size:.92rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{font:inherit;font-size:.9rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* the slip — the one memorable thing */
+.slip{position:relative;background:var(--slip);color:var(--slip-ink);border-radius:18px 18px 10px 10px;padding:34px 24px 30px;margin:18px 0;min-height:230px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:0 2px 0 var(--line)}
+.slip::before{content:"";position:absolute;left:18px;right:18px;top:14px;border-top:2px dashed color-mix(in srgb,var(--slip-ink) 25%,transparent)}
+.slip .kind{position:absolute;top:22px;left:0;right:0;font-size:.8rem;opacity:.65}
+.slip .big{font-family:"Huninn","Noto Sans TC",sans-serif;font-size:1.65rem;line-height:1.35;overflow-wrap:anywhere}
+.slip .big .en{color:inherit;opacity:.7;font-size:.62em;margin-top:8px}
+.slip.huge .big{font-size:2.6rem}
+.slip.empty .big{opacity:.5;font-size:1.2rem}
+.slip.drawn{animation:pull .42s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pull{from{transform:translateY(26px) rotate(-2deg);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.slip.drawn{animation:none}}
+.slip.tod-truth{background:color-mix(in srgb,var(--teal) 16%,var(--slip))}
+.slip.tod-dare{background:color-mix(in srgb,var(--guava) 20%,var(--slip))}
+.reveal{margin-top:16px;padding-top:14px;border-top:2px dashed color-mix(in srgb,var(--slip-ink) 25%,transparent)}
+.reveal .tg{font-family:"Huninn",sans-serif;font-size:1.9rem}
+.reveal .rom{font-size:1.05rem;opacity:.8}
+.btn{font:inherit;font-weight:700;font-size:1.05rem;border:0;border-radius:14px;padding:15px 18px;cursor:pointer;width:100%;background:var(--teal);color:#fff}
+.btn.alt{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);font-weight:500}
+.btn.warn{background:var(--guava)}
+.btn.sun{background:var(--mango);color:#3A2A00}
+.row{display:flex;gap:10px;margin-top:10px}
+.row>*{flex:1}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:.85rem;margin-top:6px}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--mango);outline-offset:2px}
+label.f{display:block;margin:12px 0 4px;font-size:.9rem;font-weight:500}
+input,select,textarea{font:inherit;width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+textarea{min-height:150px;resize:vertical}
+.inline{display:flex;gap:8px}
+.inline input{flex:1}
+.inline .btn{width:auto;padding:10px 14px;font-size:.9rem}
+.timer{font-family:"Huninn",sans-serif;font-size:3rem;text-align:center;line-height:1}
+.timer.low{color:var(--guava)}
+.score{text-align:center;color:var(--muted)}
+.list{list-style:none;padding:0;margin:10px 0}
+.list li{padding:8px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}
+.ok{color:var(--teal);font-weight:700}.no{color:var(--guava)}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;margin:12px 0}
+.seg button{flex:1;font:inherit;border:0;background:var(--surface);color:var(--ink);padding:10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--teal);color:#fff}
+.note{font-size:.82rem;color:var(--muted);margin-top:10px}
+.cover{touch-action:manipulation;position:fixed;inset:0;z-index:20;background:var(--slip);color:var(--slip-ink);display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}
+.cover .big{font-family:"Huninn",sans-serif;font-size:clamp(2.4rem,11vw,5rem);line-height:1.2;overflow-wrap:anywhere}
+.cover .big .en{color:inherit;opacity:.7;font-size:.4em}
+.cover small{display:block;margin-top:30px;opacity:.6}
+.result{background:var(--surface);border-radius:12px;padding:12px 14px;margin-top:12px}
+.result h3{margin:0 0 6px;font-size:1rem}
+.hs{position:fixed;inset:0;z-index:20;background:var(--slip);color:var(--slip-ink);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.hs-word{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:70px 24px;pointer-events:none;font-family:"Huninn",sans-serif;font-size:clamp(2.6rem,12vw,6rem);line-height:1.15;z-index:1;overflow-wrap:anywhere}
+.hs-word .en{color:inherit;opacity:.7;font-size:.4em;margin-top:10px}
+.hs-top{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));left:0;right:0;text-align:center;font-family:"Huninn",sans-serif;font-size:1.5rem;z-index:2;pointer-events:none}
+.hs-zone{position:absolute;top:0;bottom:0;width:50%;border:0;font:inherit;color:inherit;font-size:1.1rem;display:flex;align-items:flex-end;justify-content:center;padding-bottom:calc(26px + env(safe-area-inset-bottom,0px));cursor:pointer}
+.hs-zone.skip{left:0;background:color-mix(in srgb,var(--guava) 14%,transparent)}
+.hs-zone.ok{right:0;background:color-mix(in srgb,var(--teal) 16%,transparent)}
+.hs-zone:active{filter:brightness(.92)}
+.hs-end{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:3;font:inherit;font-size:1.1rem;width:40px;height:40px;border-radius:50%;border:0;background:color-mix(in srgb,var(--slip-ink) 12%,transparent);color:inherit;cursor:pointer}
+.pool li{align-items:center;padding:6px 4px}
+.pool .num{flex:0 0 2.4rem;height:2.4rem;border-radius:50%;background:var(--mango);color:#3A2A00;display:flex;align-items:center;justify-content:center;font-family:"Huninn",sans-serif;font-size:1.1rem}
+.pool input{flex:1;padding:8px 10px}
+.pool .del{flex:0 0 2.4rem;height:2.4rem;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);color:var(--guava);font-size:1rem;cursor:pointer}
+.scene{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;margin-top:6px}
+.scene .chip{grid-column:2;grid-row:1/3;font-size:.8rem;padding:6px 10px}
+.mc{background:var(--slip);color:var(--slip-ink);border-radius:16px;padding:14px;margin:12px 0;text-align:center}
+.mc .kind{font-size:.8rem;opacity:.65}
+.mc .ev{font-family:"Huninn",sans-serif;font-size:1.35rem;line-height:1.35;min-height:3.2em;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:6px 0 10px}
+.mc .ev .en,.said .en{color:inherit;opacity:.7}
+.arrow{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+.arrow span{font-size:2.6rem;line-height:1;opacity:.18;cursor:pointer;transition:opacity .2s,transform .2s}
+.arrow span.on{opacity:1;color:var(--teal);transform:scale(1.15)}
+.arrow small{font-size:.85rem;line-height:1.3}
+.arrow b{font-family:"Huninn",sans-serif;font-weight:400;font-size:1.2rem}
+.actors{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actor{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.actor.on{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 25%,transparent)}
+.aname{font-weight:700;text-align:center;font-size:.95rem}
+.said{background:var(--slip);color:var(--slip-ink);border-radius:10px;padding:12px 8px;min-height:120px;font-family:"Huninn",sans-serif;font-size:1.05rem;line-height:1.4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow-wrap:anywhere}
+.said.drawn,.mc .ev.drawn{animation:pull .42s cubic-bezier(.2,.9,.3,1.2)}
+.actor .btn{padding:12px 8px;font-size:.95rem}
+.clap{font:inherit;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.said.drawn,.mc .ev.drawn{animation:none}}
+.actor .btn:disabled,.mc .btn:disabled{opacity:.5;cursor:default}
+.actor:not(.on){opacity:.75}
+.script h3{margin:14px 0 6px;font-family:"Huninn",sans-serif;font-weight:400;font-size:1.15rem}
+.script h3:first-child{margin-top:0}
+.script .sn{margin:8px 0 2px;color:var(--muted);font-size:.92rem}
+.script .sl{margin:0 0 6px;font-size:1.05rem}
+.script .en{display:inline;margin-left:4px}
+.hint{display:flex;gap:8px;align-items:center;justify-content:space-between;text-align:left;background:color-mix(in srgb,var(--slip-ink) 7%,transparent);border-radius:10px;padding:8px 10px;font-size:.92rem}
+.hint .en{display:inline;margin-left:4px;color:inherit;opacity:.7}
+.hint .chip{flex:0 0 auto;font-size:.8rem;padding:5px 10px}
+.mc .chip{font-size:.85rem}
+footer{color:var(--muted);font-size:.8rem;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <button class="brand" onclick="go('home')">🎋 抽一張</button>
+    <button class="toggle" id="enToggle" aria-pressed="true" onclick="toggleEN()">EN 字幕</button>
+  </header>
+  <main id="app"></main>
+  <footer>離線也能玩・不收集任何資料<span class="en">Works offline · no data collected</span></footer>
+</div>
+<div id="coverHost"></div>
+
+<script>
+/* ================= 題庫 Content ================= */
+const TOPICS = {
+  ice:{zh:"輕鬆破冰",en:"Icebreakers",items:[
+    ["你最近一次大笑是因為什麼？","What made you laugh really hard recently?"],
+    ["如果明天突然放假一天，你會怎麼過？","If you got a surprise day off tomorrow, how would you spend it?"],
+    ["你手機裡最常打開的 App 是哪個？","Which app do you open the most?"],
+    ["你小時候的夢想職業是什麼？","What did you want to be when you were a kid?"],
+    ["你最近迷上什麼東西？","What are you into lately?"],
+    ["你吃過最難忘的一餐是什麼？","What's the most memorable meal you've had?"],
+    ["有什麼小事會讓你瞬間心情變好？","What small thing instantly makes your day better?"],
+    ["你是早起型還是夜貓子？","Are you a morning person or a night owl?"],
+    ["你去過最喜歡的地方是哪裡？","What's your favorite place you've ever been?"],
+    ["你有什麼奇怪的小才藝？","Do you have a weird little talent?"],
+    ["如果能馬上學會一項技能，你選什麼？","If you could learn one skill instantly, what would it be?"],
+    ["你的手搖飲固定點法？甜度冰塊？","What's your usual drink order — sugar and ice level?"],
+    ["你覺得自己像哪一種動物？","Which animal are you most like?"],
+    ["最近最推薦的劇或電影？","What show or movie would you recommend right now?"],
+    ["你理想的週末行程是什麼？","What does your perfect weekend look like?"],
+    ["你最想住在哪個城市一年？","Which city would you live in for one year?"],
+    ["你最常被誤會的一件事是什麼？","What do people most often get wrong about you?"],
+    ["你家鄉有什麼一定要吃的？","What's a must-eat food from your hometown?"]
+  ]},
+  deep:{zh:"深度聊聊",en:"Deep talk",items:[
+    ["你人生中哪個決定最改變了你？","Which decision changed your life the most?"],
+    ["你最感謝的人是誰？為什麼？","Who are you most grateful for, and why?"],
+    ["什麼時刻會讓你覺得「活著真好」？","What moments make you feel glad to be alive?"],
+    ["你最想對十年前的自己說什麼？","What would you tell yourself ten years ago?"],
+    ["你覺得朋友之間最重要的是什麼？","What matters most in a friendship?"],
+    ["有什麼事你一直想做但還沒做？","What have you always wanted to do but haven't yet?"],
+    ["你什麼時候最像你自己？","When do you feel most like yourself?"],
+    ["你曾經改變過哪個很堅持的想法？","What strong belief have you changed your mind about?"],
+    ["你希望別人怎麼形容你？","How do you hope people describe you?"],
+    ["你覺得「成功」長什麼樣子？","What does success look like to you?"],
+    ["你最近學到最重要的一件事？","What's the most important thing you've learned recently?"],
+    ["有哪個習慣讓你的生活變更好？","Which habit made your life better?"]
+  ]},
+  wyr:{zh:"二選一",en:"Would you rather",items:[
+    ["永遠不能喝手搖飲，還是永遠不能吃宵夜？","Never drink bubble tea again, or never eat late-night snacks again?"],
+    ["會飛，還是會隱形？","Be able to fly, or be invisible?"],
+    ["回到過去，還是去看未來？","Travel to the past, or see the future?"],
+    ["住山上，還是住海邊？","Live in the mountains, or by the sea?"],
+    ["會讀心，還是能預知未來？","Read minds, or predict the future?"],
+    ["一輩子只能吃鹹酥雞，還是只能吃滷肉飯？","Eat only popcorn chicken forever, or only braised pork rice forever?"],
+    ["能跟動物說話，還是會說所有語言？","Talk to animals, or speak every human language?"],
+    ["一個月沒網路，還是一個夏天沒冷氣？","A month without internet, or a summer without AC?"],
+    ["每天都下雨，還是每天都超熱？","Rain every day, or scorching heat every day?"],
+    ["永遠早到十分鐘，還是永遠剛好準時但很趕？","Always 10 minutes early, or always just on time but rushing?"],
+    ["當最聰明的人，還是最好笑的人？","Be the smartest person, or the funniest?"],
+    ["只能看電影，還是只能聽音樂？","Only watch movies, or only listen to music?"]
+  ]},
+  never:{zh:"我從來沒有",en:"Never have I ever",items:[
+    ["我從來沒有在捷運或公車上睡過站。","Never have I ever slept past my stop."],
+    ["我從來沒有追過垃圾車。","Never have I ever chased a garbage truck."],
+    ["我從來沒有傳錯訊息給別人。","Never have I ever texted the wrong person."],
+    ["我從來沒有在半夜吃泡麵。","Never have I ever eaten instant noodles at midnight."],
+    ["我從來沒有假裝聽懂別人在說什麼。","Never have I ever pretended to understand someone."],
+    ["我從來沒有在 KTV 唱到破音。","Never have I ever cracked my voice at karaoke."],
+    ["我從來沒有一個人出國旅行。","Never have I ever traveled abroad alone."],
+    ["我從來沒有忘記朋友生日。","Never have I ever forgotten a friend's birthday."],
+    ["我從來沒有偷看結局才看劇。","Never have I ever read the spoilers before watching."],
+    ["我從來沒有在考試前一晚才開始讀書。","Never have I ever started studying the night before an exam."],
+    ["我從來沒有手機摔到螢幕裂掉。","Never have I ever cracked my phone screen."],
+    ["我從來沒有說「我五分鐘到」但其實還沒出門。","Never have I ever said “5 minutes away” before leaving home."]
+  ]},
+  love:{zh:"戀愛話題",en:"Love & dating",items:[
+    ["你相信一見鍾情嗎？","Do you believe in love at first sight?"],
+    ["你理想的約會是什麼樣子？","What's your ideal date?"],
+    ["你最在意另一半的哪個特質？","What quality matters most to you in a partner?"],
+    ["你收過最難忘的禮物是什麼？","What's the most memorable gift you've received?"],
+    ["談戀愛的你會很黏人嗎？","Are you clingy when you're in a relationship?"],
+    ["吵架之後你通常怎麼和好？","How do you usually make up after a fight?"],
+    ["你的愛之語是什麼？（禮物、陪伴、讚美、行動、擁抱）","What's your love language — gifts, time, words, acts, or touch?"],
+    ["你能接受遠距離戀愛嗎？","Could you do a long-distance relationship?"],
+    ["第一次見面，你最先注意到對方哪裡？","What do you notice first when you meet someone?"],
+    ["你覺得幾歲結婚剛好？","What age feels right to get married?"]
+  ]}
+};
+
+const TRUTH = [
+  ["你最近一次說謊是什麼時候？","When was the last time you lied?"],
+  ["你做過最丟臉的事是什麼？","What's the most embarrassing thing you've done?"],
+  ["在場誰給你的第一印象最深？","Who here left the strongest first impression on you?"],
+  ["你偷偷暗戀過誰嗎？","Have you ever had a secret crush?"],
+  ["你最怕什麼？","What are you most afraid of?"],
+  ["你曾經假裝生病請假嗎？","Have you ever faked being sick to skip something?"],
+  ["你最後一次哭是因為什麼？","What made you cry the last time?"],
+  ["你搜尋紀錄最近一筆是什麼？","What's your most recent search?"],
+  ["你有什麼壞習慣？","What's a bad habit of yours?"],
+  ["你最想跟在場誰交換人生一天？","Who here would you swap lives with for a day?"],
+  ["你曾經已讀不回誰？為什麼？","Who did you leave on read, and why?"],
+  ["你做過最衝動的決定是什麼？","What's the most impulsive thing you've done?"],
+  ["小時候被罵最慘的一次？","When did you get in the biggest trouble as a kid?"],
+  ["你有什麼說不出口的小怪癖？","What's a weird habit you rarely admit?"],
+  ["你最常對自己說的謊是什麼？","What lie do you tell yourself most often?"],
+  ["在場誰最可能成為明星？","Who here is most likely to become famous?"],
+  ["你最近一次心動是什麼時候？","When did your heart last skip a beat?"],
+  ["你覺得自己最被低估的優點是什麼？","What's your most underrated strength?"],
+  ["你最不想被爸媽知道的一件事？","What would you least want your parents to find out?"],
+  ["如果可以重來，你想改變哪一天？","If you could redo one day, which would it be?"]
+];
+const DARE = [
+  ["用台語自我介紹 30 秒（不會的話用你最不熟的語言）","Introduce yourself in Taiwanese for 30 sec (or your weakest language)"],
+  ["模仿在場一個人，讓大家猜是誰","Imitate someone here and let everyone guess who"],
+  ["用最誇張的方式唱一段生日快樂歌","Sing Happy Birthday as dramatically as possible"],
+  ["原地做 10 下深蹲","Do 10 squats"],
+  ["讓左邊的人用你的手機幫你拍一張醜照","Let the person on your left take an ugly photo of you"],
+  ["用撒嬌的語氣說「我要喝珍奶」","Say “I want bubble tea” in your cutest voice"],
+  ["學一種動物叫 10 秒，讓大家猜","Make an animal sound for 10 sec — others guess"],
+  ["用三個詞稱讚右邊的人","Compliment the person on your right in three words"],
+  ["跳 15 秒的舞","Dance for 15 seconds"],
+  ["用外國人腔調講中文一分鐘","Speak Mandarin with a foreign accent for a minute"],
+  ["保持一個好笑的表情直到下一輪","Hold a funny face until the next turn"],
+  ["傳訊息給一個朋友說「我只是想說你很棒」","Text a friend: “Just wanted to say you're awesome”"],
+  ["用饒舌的方式講今天做了什麼","Rap about what you did today"],
+  ["閉著眼睛畫在場某人的臉","Draw someone here with your eyes closed"],
+  ["講一個冷笑話，沒人笑就再講一個","Tell a bad joke — if nobody laughs, tell another"],
+  ["跟每個人擊掌並說一句讚美","High-five everyone and give each a compliment"],
+  ["用新聞主播的語氣介紹你的鄰座","Introduce your neighbor like a news anchor"],
+  ["單腳站立直到下一個人完成題目","Stand on one leg until the next person finishes"],
+  ["只用 emoji 傳一句話到群組，讓大家猜意思","Send a sentence in emojis only — others guess it"],
+  ["用三種不同語氣說「我愛你」","Say “I love you” in three different tones"]
+];
+
+const CHARADES = {
+  animal:{zh:"動物",en:"Animals",items:[["長頸鹿","Giraffe"],["企鵝","Penguin"],["袋鼠","Kangaroo"],["猴子","Monkey"],["大象","Elephant"],["蛇","Snake"],["青蛙","Frog"],["無尾熊","Koala"],["螃蟹","Crab"],["公雞","Rooster"],["章魚","Octopus"],["貓頭鷹","Owl"],["鱷魚","Crocodile"],["熊貓","Panda"],["孔雀","Peacock"],["烏龜","Turtle"]]},
+  action:{zh:"動作",en:"Actions",items:[["刷牙","Brushing teeth"],["騎機車","Riding a scooter"],["自拍","Taking a selfie"],["打噴嚏","Sneezing"],["釣魚","Fishing"],["游泳","Swimming"],["打麻將","Playing mahjong"],["擠捷運","Squeezing onto the MRT"],["被熱湯燙到","Burned by hot soup"],["跳繩","Jumping rope"],["化妝","Putting on makeup"],["打電動","Playing video games"],["追公車","Chasing a bus"],["追垃圾車","Chasing the garbage truck"],["吹頭髮","Blow-drying hair"],["拜拜","Praying at a temple"]]},
+  food:{zh:"台灣美食",en:"Taiwanese food",items:[["珍珠奶茶","Bubble tea"],["臭豆腐","Stinky tofu"],["小籠包","Soup dumplings"],["鹹酥雞","Popcorn chicken"],["牛肉麵","Beef noodle soup"],["刈包","Gua bao"],["蚵仔煎","Oyster omelette"],["芒果冰","Mango shaved ice"],["滷肉飯","Braised pork rice"],["鳳梨酥","Pineapple cake"],["雞排","Fried chicken cutlet"],["火鍋","Hot pot"],["茶葉蛋","Tea egg"],["地瓜球","Sweet potato balls"],["蔥油餅","Scallion pancake"],["豆花","Tofu pudding"]]},
+  job:{zh:"職業",en:"Jobs",items:[["醫生","Doctor"],["消防員","Firefighter"],["廚師","Chef"],["老師","Teacher"],["外送員","Delivery rider"],["理髮師","Barber"],["魔術師","Magician"],["機長","Pilot"],["警察","Police officer"],["網紅","Influencer"],["牙醫","Dentist"],["攝影師","Photographer"],["工程師","Engineer"],["超商店員","Convenience store clerk"],["計程車司機","Taxi driver"],["健身教練","Personal trainer"]]},
+  thing:{zh:"生活日常",en:"Everyday life",items:[["便利商店","Convenience store"],["夜市","Night market"],["KTV","Karaoke"],["電梯","Elevator"],["雨傘","Umbrella"],["吹風機","Hair dryer"],["颱風","Typhoon"],["地震","Earthquake"],["煙火","Fireworks"],["摩天輪","Ferris wheel"],["台北101","Taipei 101"],["鬧鐘","Alarm clock"],["紅包","Red envelope"],["電風扇","Electric fan"],["夾娃娃機","Claw machine"],["悠遊卡","Transit card"]]}
+};
+
+/* 台語空耳：[國語空耳, English 空耳, 台語漢字, 台羅, 意思, meaning, 類別] */
+const TG_CAT={food:['食物','Food'],daily:['日常用語','Everyday'],saying:['俗語・流行語','Saying']};
+const TAIGI = [
+  ["路霸崩","Low Bar Pong","滷肉飯","lóo-bah-pn̄g","滷肉飯","Braised pork rice","food"],
+  ["霸丸","Bar One","肉圓","bah-uân","肉圓","Ba-wan (meat dumpling)","food"],
+  ["逼混","Bee Hoon","米粉","bí-hún","米粉","Rice noodles","food"],
+  ["低卡","Tea Car","豬跤","ti-kha","豬腳（一點都不低卡）","Pork knuckle (not low-cal at all)","food"],
+  ["喔啊尖","Oh Ah Jen","蚵仔煎","ô-á-tsian","蚵仔煎","Oyster omelette","food"],
+  ["甘阿必","Come a Bit","柑仔蜜","kam-á-bi̍t","番茄","Tomato","food"],
+  ["旺來","Own Lie","王梨","ông-lâi","鳳梨","Pineapple","food"],
+  ["金蕉","Kin Joe","芎蕉","kin-tsio","香蕉","Banana","food"],
+  ["土豆","Toe Dow","塗豆","thôo-tāu","花生（不是馬鈴薯！）","Peanut (not potato!)","food"],
+  ["古炸蜜","Cause a Bee","古早味","kóo-tsá-bī","懷舊的老味道","Old-time flavor","food"],
+  ["都下","Toe, See Ya","多謝","to-siā","謝謝","Thank you","daily"],
+  ["派謝","Pie, Say","歹勢","pháinn-sè","不好意思","Sorry / excuse me","daily"],
+  ["家霸妹","Jab Pa Buy","食飽未？","tsia̍h-pá buē?","吃飽了沒？（台灣人的打招呼）","Have you eaten? (a common greeting)","daily"],
+  ["播要緊","Bow Yow Keen","無要緊","bô-iàu-kín","沒關係","No problem","daily"],
+  ["好家在","Hoe Car Sigh","好佳哉","hó-ka-tsài","好險、幸好","Phew, lucky","daily"],
+  ["親菜","Chin Chai","清彩","tshìn-tshái","隨便","Whatever","daily"],
+  ["開槓","Kai Gong","開講","khai-káng","聊天","Chat","daily"],
+  ["水","Sway","媠","suí","漂亮","Pretty","daily"],
+  ["姑追",null,"古錐","kóo-tsui","可愛","Cute","daily"],
+  ["喔偷買","Oh, Toe Buy","歐兜邁","oo-tóo-bái","機車（來自日語）","Scooter (from Japanese “auto-bike”)","daily"],
+  ["被安轉","Bay and Swan","欲按怎？","beh án-tsuánn?","要怎麼辦？","What do we do now?","daily"],
+  ["蝦米","Sham Me","啥物","siánn-mih","什麼","What?","daily"],
+  ["母災","Mm Chai","毋知","m̄-tsai","不知道","I don't know","daily"],
+  ["卡大車","Car Tar Chair","跤踏車","kha-ta̍h-tshia","腳踏車","Bicycle","daily"],
+  ["鳥吃","Meow Cheese","鳥鼠","niáu-tshí","老鼠","Mouse","daily"],
+  ["嘴雞","Sway Kay","水雞","tsuí-ke","青蛙","Frog","daily"],
+  ["洛河","Low Ho","落雨","lo̍h-hōo","下雨","It's raining","daily"],
+  ["秀奇","Sue Key","受氣","siū-khì","生氣","Angry","daily"],
+  ["真甜","Gin Tom","真忝","tsin thiám","很累（不是很甜！）","So tired (not “so sweet”!)","daily"],
+  ["變鎖","Pen Saw","便所","piān-sóo","廁所","Toilet","daily"],
+  ["菜七啊","Chai Chee Ah","菜市仔","tshài-tshī-á","傳統市場","Wet market","daily"],
+  ["狗位","Cow Way","厚話","kāu-uē","話很多","Talks too much","saying"],
+  ["三八","Sum Pot","三八","sam-pat","瘋瘋癲癲、愛搞笑","Goofy, silly","saying"],
+  ["好野人","Hoe Yeah Long","好額人","hó-gia̍h-lâng","有錢人","Rich person","saying"],
+  ["金A給A","Gin A, K A","真的假的","tsin--ê ké--ê","真的假的？","For real?","saying"],
+  ["料落去","Leo Low Key","撩落去","liâu--lo̍h-khì","豁出去、拚了","Go all in!","saying"],
+  ["練肖話","Lean Sow Way","練痟話","liān-siáu-uē","胡說八道","Talking nonsense","saying"],
+  ["凍蒜","Tong Swan","當選","tòng-suán","當選！（選舉口號）","Elected! (campaign chant)","saying"],
+  ["好康","Ho Kong","好空","hó-khang","好處、好康的","A great deal","saying"],
+  ["雞婆",null,"家婆","ke-pô","愛管閒事","Busybody","saying"],
+  ["趴騙",null,"拍拚","phah-piànn","努力打拚","Work hard","saying"],
+  ["掏卡派去",null,"頭殼歹去","thâu-khak pháinn--khì","頭腦壞掉了","Lost your mind","saying"],
+  ["家緊弄怕晚",null,"食緊挵破碗","tsia̍h kín lòng-phuà uánn","吃太快會打破碗＝欲速則不達","Haste makes waste","saying"],
+  ["機監利固，蹦啦啊監洗庫",null,"一兼二顧，摸蜊仔兼洗褲","tsi̍t kiam jī kòo, bong lâ-á kiam sé khòo","一舉兩得","Two birds with one stone","saying"]
+];
+
+const UNDERCOVER = [
+  [["珍珠奶茶","Bubble tea"],["椰果奶茶","Coconut-jelly milk tea"]],
+  [["牙刷","Toothbrush"],["牙膏","Toothpaste"]],
+  [["火鍋","Hot pot"],["麻辣燙","Mala tang"]],
+  [["機車","Scooter"],["腳踏車","Bicycle"]],
+  [["貓","Cat"],["狗","Dog"]],
+  [["捷運","MRT"],["公車","Bus"]],
+  [["便利商店","Convenience store"],["超市","Supermarket"]],
+  [["夜市","Night market"],["傳統市場","Wet market"]],
+  [["眼鏡","Glasses"],["隱形眼鏡","Contact lenses"]],
+  [["枕頭","Pillow"],["抱枕","Cushion"]],
+  [["雨傘","Umbrella"],["雨衣","Raincoat"]],
+  [["籃球","Basketball"],["排球","Volleyball"]],
+  [["小籠包","Soup dumplings"],["水餃","Dumplings"]],
+  [["KTV","Karaoke"],["演唱會","Concert"]],
+  [["婚禮","Wedding"],["生日派對","Birthday party"]],
+  [["情人節","Valentine's Day"],["七夕","Qixi Festival"]],
+  [["過年","Lunar New Year"],["聖誕節","Christmas"]],
+  [["醫生","Doctor"],["護理師","Nurse"]],
+  [["冰淇淋","Ice cream"],["剉冰","Shaved ice"]],
+  [["手機","Phone"],["平板","Tablet"]],
+  [["海邊","Beach"],["游泳池","Swimming pool"]],
+  [["鬧鐘","Alarm clock"],["手錶","Watch"]],
+  [["拖鞋","Slippers"],["涼鞋","Sandals"]],
+  [["自拍","Selfie"],["團體照","Group photo"]],
+  [["飛機","Airplane"],["高鐵","High-speed rail"]],
+  [["香菜","Cilantro"],["九層塔","Thai basil"]],
+  [["薯條","French fries"],["洋芋片","Potato chips"]],
+  [["外送","Delivery"],["外帶","Takeout"]],
+  [["咖啡","Coffee"],["奶茶","Milk tea"]],
+  [["粽子","Rice dumpling"],["油飯","Sticky rice"]]
+];
+
+const WHOAMI = {
+  role:{zh:"角色人物",en:"Characters",items:[["太空人","Astronaut"],["海盜","Pirate"],["忍者","Ninja"],["吸血鬼","Vampire"],["美人魚","Mermaid"],["殭屍","Zombie"],["聖誕老人","Santa Claus"],["機器人","Robot"],["外星人","Alien"],["公主","Princess"],["國王","King"],["巫師","Wizard"],["偵探","Detective"],["小丑","Clown"],["超級英雄","Superhero"],["月老","Matchmaker god"],["土地公","Earth god"],["夜市老闆","Night-market vendor"],["外送員","Delivery rider"],["網紅","Influencer"],["新娘","Bride"],["消防員","Firefighter"],["計程車司機","Taxi driver"],["補習班老師","Cram-school teacher"],["阿嬤","Grandma"]]},
+  animal:{zh:"動物",en:"Animals",items:[["熊貓","Panda"],["企鵝","Penguin"],["長頸鹿","Giraffe"],["鯊魚","Shark"],["流浪貓","Stray cat"],["恐龍","Dinosaur"],["無尾熊","Koala"],["袋鼠","Kangaroo"],["大象","Elephant"],["獅子","Lion"],["猴子","Monkey"],["蚊子","Mosquito"],["蟑螂","Cockroach"],["鸚鵡","Parrot"],["斑馬","Zebra"],["河馬","Hippo"],["石虎","Leopard cat"],["台灣黑熊","Formosan black bear"],["水母","Jellyfish"],["海豚","Dolphin"]]},
+  food:{zh:"食物",en:"Food",items:[["珍珠奶茶","Bubble tea"],["鳳梨酥","Pineapple cake"],["臭豆腐","Stinky tofu"],["便當","Lunch box"],["小籠包","Soup dumplings"],["滷肉飯","Braised pork rice"],["鹹酥雞","Popcorn chicken"],["牛肉麵","Beef noodle soup"],["芒果冰","Mango shaved ice"],["茶葉蛋","Tea egg"],["泡麵","Instant noodles"],["披薩","Pizza"],["漢堡","Burger"],["壽司","Sushi"],["豆花","Tofu pudding"],["火鍋","Hot pot"],["蚵仔煎","Oyster omelette"],["粽子","Rice dumpling"],["月餅","Mooncake"],["雞排","Fried chicken cutlet"]]},
+  thing:{zh:"東西・地方",en:"Things & places",items:[["颱風","Typhoon"],["台北101","Taipei 101"],["鬧鐘","Alarm clock"],["衛生紙","Toilet paper"],["拖鞋","Slipper"],["雪人","Snowman"],["雨傘","Umbrella"],["馬桶","Toilet"],["吹風機","Hair dryer"],["手機","Phone"],["紅包","Red envelope"],["電風扇","Electric fan"],["冷氣","Air conditioner"],["悠遊卡","Transit card"],["夾娃娃機","Claw machine"],["麻將","Mahjong"],["牙刷","Toothbrush"],["行李箱","Suitcase"],["電梯","Elevator"],["便利商店","Convenience store"]]}
+};
+
+/* ================= 題庫擴充 More content ================= */
+TOPICS.ice.items.push(
+  ["你的手機桌布是什麼？","What's your phone wallpaper?"],["你最常用的 emoji 是哪個？","Which emoji do you use the most?"],
+  ["你最近一次買給自己的禮物是什麼？","What's the last gift you bought yourself?"],["你覺得自己最像哪個季節？","Which season are you most like?"],
+  ["你最無法抗拒的零食是什麼？","Which snack can you never resist?"],["你有收藏什麼東西嗎？","Do you collect anything?"],
+  ["你人生第一份工作是什麼？","What was your first job?"],["如果中了一百萬，第一件事做什麼？","If you won a million, what's the first thing you'd do?"],
+  ["你去 KTV 必點哪一類歌？","What kind of song do you always pick at karaoke?"],["你最常被朋友吐槽什麼？","What do your friends tease you about most?"],
+  ["你最喜歡一天中的哪個時段？","What's your favorite time of day?"],["用三個詞形容你自己。","Describe yourself in three words."],
+  ["你小時候最愛看哪種卡通？","What kind of cartoons did you love as a kid?"],["旅行時你是計畫型還是隨興型？","Are you a planner or spontaneous when traveling?"],
+  ["你最近一次熬夜是在做什麼？","What kept you up late last time?"],["你最愛的夜市小吃是什麼？","What's your favorite night-market snack?"],
+  ["如果能和任何人吃一頓飯，你選誰？","If you could have dinner with anyone, who would it be?"],["你最擅長哪一種家事？","Which chore are you best at?"]
+);
+TOPICS.deep.items.push(
+  ["最近有什麼事讓你很驕傲？","What recently made you proud?"],["你覺得自己最大的改變是什麼？","What's the biggest way you've changed?"],
+  ["有哪句話一直影響著你？","Is there a sentence that has stayed with you?"],["你什麼時候最放鬆？","When do you feel most relaxed?"],
+  ["你怎麼度過低潮？","How do you get through low moments?"],["家人教給你最重要的是什麼？","What's the most important thing your family taught you?"],
+  ["你希望五年後的自己在做什麼？","What do you hope you're doing in five years?"],["哪一種話你最難說出口？","What kind of thing is hardest for you to say?"],
+  ["你覺得什麼樣的人最有魅力？","What makes a person attractive to you?"],["有沒有一個地方對你意義特別重大？","Is there a place that means a lot to you?"],
+  ["你人生中最幸運的事是什麼？","What's the luckiest thing in your life?"],["你會怎麼定義「家」？","How would you define “home”?"]
+);
+TOPICS.wyr.items.push(
+  ["永遠只能說真話，還是永遠不能說話？","Always tell the truth, or never speak again?"],["當貓，還是當狗？","Be a cat, or a dog?"],
+  ["住台灣，還是住國外大城市？","Live in Taiwan, or a big city abroad?"],["旅行只能坐飛機，還是只能坐火車？","Travel only by plane, or only by train?"],
+  ["一輩子全糖，還是一輩子無糖？","Full sugar forever, or no sugar forever?"],["能讓時間暫停，還是能倒轉 10 秒？","Pause time, or rewind 10 seconds?"],
+  ["跟朋友出國，還是一個人出國？","Travel with friends, or alone?"],["一輩子不能用手機，還是不能看影集電影？","No phone forever, or no shows and movies forever?"],
+  ["回到十歲，還是直接變成六十歲？","Go back to 10, or jump to 60?"],["每天五點起床，還是每天三點後才能睡？","Wake at 5am daily, or never sleep before 3am?"],
+  ["香菜吃到飽，還是永遠不能吃辣？","Unlimited cilantro, or never eat spicy food?"],["跟偶像見面五分鐘，還是拿到十萬塊？","Meet your idol for 5 minutes, or get NT$100,000?"]
+);
+TOPICS.never.items.push(
+  ["我從來沒有在廁所滑手機超過 20 分鐘。","Never have I ever scrolled on the toilet for 20+ minutes."],["我從來沒有吃過榴槤。","Never have I ever eaten durian."],
+  ["我從來沒有在路上認錯人打招呼。","Never have I ever waved at a stranger thinking it was a friend."],["我從來沒有半夜被地震嚇醒。","Never have I ever been woken by an earthquake."],
+  ["我從來沒有把飲料打翻在電腦上。","Never have I ever spilled a drink on a laptop."],["我從來沒有跑過馬拉松。","Never have I ever run a marathon."],
+  ["我從來沒有在電影院睡著。","Never have I ever fallen asleep in a movie theater."],["我從來沒有把自己鎖在門外。","Never have I ever locked myself out."],
+  ["我從來沒有一天喝兩杯以上手搖飲。","Never have I ever had two bubble teas in one day."],["我從來沒有用過交友軟體。","Never have I ever used a dating app."],
+  ["我從來沒有考試作弊。","Never have I ever cheated on a test."],["我從來沒有看電影哭到停不下來。","Never have I ever cried nonstop at a movie."]
+);
+TOPICS.love.items.push(
+  ["你覺得朋友變情人可行嗎？","Can friends become lovers?"],["你最受不了另一半哪種習慣？","Which partner habit would drive you crazy?"],
+  ["你理想的求婚場景？","What's your ideal proposal?"],["你會在意另一半的過去嗎？","Do you care about a partner's past?"],
+  ["你最浪漫的一次經驗？","What's the most romantic thing you've experienced?"],["約會你喜歡各付各的，還是輪流請？","Split the bill, or take turns paying?"],
+  ["你希望另一半多久聯絡你一次？","How often do you want to hear from a partner?"],["你喜歡驚喜，還是事先說好？","Surprises, or plans agreed in advance?"],
+  ["吃醋的時候你會怎麼表現？","How do you act when you're jealous?"],["你覺得戀愛中最重要的是什麼？","What matters most in a relationship?"]
+);
+TRUTH.push(
+  ["你手機裡大概有幾張自拍？","Roughly how many selfies are on your phone?"],["你最想刪掉哪一則貼文？","Which post would you most like to delete?"],
+  ["你曾經偷偷討厭過一個朋友嗎？","Have you ever secretly disliked a friend?"],["你做過最幼稚的事？","What's the most childish thing you've done?"],
+  ["你最近一次被誰感動？","Who touched your heart recently?"],["你最不能接受的約會行為？","What's a dating dealbreaker for you?"],
+  ["你曾經忘記跟人約好的事嗎？","Have you ever forgotten plans with someone?"],["你有沒有偷偷存過別人的照片？","Have you ever secretly saved someone's photo?"],
+  ["你最想重新聯絡的人是誰？","Who would you most like to reconnect with?"],["在場誰最會說謊？","Who here is the best liar?"],
+  ["你最貴的一次衝動購物？","What's your most expensive impulse buy?"],["你最尷尬的口誤是什麼？","What's your most embarrassing slip of the tongue?"],
+  ["你曾經說「我沒事」但其實有事嗎？","Have you said “I'm fine” when you weren't?"],["你覺得自己幾歲才真正長大？","At what age did you really grow up?"],
+  ["你手機裡最常聊天的是誰？","Who do you text the most?"]
+);
+DARE.push(
+  ["用台語說「我愛你」（不會就現學）","Say “I love you” in Taiwanese (learn it now if needed)"],["模仿夜市老闆叫賣 20 秒","Do a 20-second night-market sales pitch"],
+  ["讓大家幫你取一個今晚專用的綽號","Let the group give you a nickname for tonight"],["用慢動作喝一口水","Drink a sip of water in slow motion"],
+  ["表演你早上被鬧鐘叫醒的樣子","Act out waking up to your alarm"],["用任何一首歌的旋律唱你的名字","Sing your name to any tune"],
+  ["比手畫腳一個詞讓右邊的人猜","Act out a word for the person on your right"],["說一個關於你的冷知識","Share a fun fact about yourself"],
+  ["用三種語言說「乾杯」","Say “cheers” in three languages"],["擺出你最帥或最美的姿勢讓大家拍","Strike your best pose for a photo"],
+  ["閉眼原地轉五圈再走直線","Spin five times with eyes closed, then walk straight"],["用時裝秀主持人的語氣介紹你今天的穿搭","Present your outfit like a fashion show host"],
+  ["模仿大家指定的一個表情包","Recreate a meme face the group picks"],["接下來三輪說話都要加「啦」","End every sentence with “啦” for three rounds"],
+  ["用嬰兒的聲音點一杯飲料","Order a drink in a baby voice"]
+);
+CHARADES.animal.items.push(["老虎","Tiger"],["兔子","Rabbit"],["蝴蝶","Butterfly"],["蝸牛","Snail"],["海豹","Seal"],["蝙蝠","Bat"],["蜘蛛","Spider"],["鴕鳥","Ostrich"],["松鼠","Squirrel"],["鯨魚","Whale"]);
+CHARADES.action.items.push(["打太極","Doing tai chi"],["騎馬","Riding a horse"],["彈吉他","Playing guitar"],["打保齡球","Bowling"],["倒立","Handstand"],["吃麵","Slurping noodles"],["換尿布","Changing a diaper"],["搶紅包","Grabbing a red envelope"],["拍蚊子","Swatting a mosquito"],["盪鞦韆","On a swing"],["搭電扶梯","Riding an escalator"]);
+CHARADES.food.items.push(["肉圓","Ba-wan"],["蚵仔麵線","Oyster vermicelli"],["胡椒餅","Pepper bun"],["麻糬","Mochi"],["車輪餅","Wheel cake"],["大腸包小腸","Sausage in sticky rice"],["冰棒","Popsicle"],["糖葫蘆","Candied fruit skewer"],["烤玉米","Grilled corn"],["燒仙草","Hot grass jelly"]);
+CHARADES.job.items.push(["空服員","Flight attendant"],["郵差","Mail carrier"],["獸醫","Vet"],["DJ","DJ"],["保全","Security guard"],["清潔人員","Cleaner"],["主播","News anchor"],["農夫","Farmer"],["歌手","Singer"],["律師","Lawyer"]);
+CHARADES.thing.items.push(["紅綠燈","Traffic light"],["垃圾車","Garbage truck"],["機場","Airport"],["溫泉","Hot spring"],["電影院","Movie theater"],["遊樂園","Amusement park"],["健身房","Gym"],["自動門","Automatic door"],["彩虹","Rainbow"],["跳蚤市場","Flea market"]);
+TAIGI.push(
+  ["酒賊","Joke Say","足濟","tsiok tsē","很多","A lot","daily"],
+  ["派寬","Pie Kwan","歹看","pháinn-khuànn","難看、丟臉","Ugly, embarrassing","daily"],
+  ["掏給","Tow K","頭家","thâu-ke","老闆","Boss","daily"],
+  ["骯包","Ung Pow","紅包","âng-pau","紅包","Red envelope","daily"],
+  ["緊阿","Gin-ah","囡仔","gín-á","小孩","Kid","daily"],
+  ["波花豆","Bow Hot Dough","無法度","bô-huat-tōo","沒辦法","No way / can't help it","daily"],
+  ["喔貝攻","Oh Bear Gong","烏白講","oo-pe̍h-kóng","亂講","Talking nonsense","saying"],
+  ["加細郎","Kia See Long","驚死人","kiann-sí-lâng","嚇死人了","Scared to death","saying"],
+  ["灰機","Whey Key","花枝","hue-ki","花枝（不是飛機！）","Cuttlefish (not an airplane!)","food"],
+  ["嘻丸","He One","魚丸","hî-uân","魚丸","Fish ball","food"],
+  ["西鍋","See Kway","西瓜","si-kue","西瓜","Watermelon","food"],
+  ["酸啊","Swine Ah","檨仔","suāinn-á","芒果","Mango","food"],
+  ["到關","Dow Kwan","豆乾","tāu-kuann","豆干","Dried tofu","food"]
+);
+UNDERCOVER.push(
+  [["雞排","Chicken cutlet"],["鹹酥雞","Popcorn chicken"]],[["牛肉麵","Beef noodles"],["拉麵","Ramen"]],[["豆漿","Soy milk"],["米漿","Rice milk"]],
+  [["鉛筆","Pencil"],["原子筆","Ballpoint pen"]],[["沙發","Sofa"],["床","Bed"]],[["吉他","Guitar"],["烏克麗麗","Ukulele"]],
+  [["電影","Movie"],["電視劇","TV drama"]],[["老虎","Tiger"],["獅子","Lion"]],[["蚊子","Mosquito"],["蒼蠅","Fly"]],
+  [["西瓜","Watermelon"],["哈密瓜","Cantaloupe"]],[["包子","Steamed bun"],["饅頭","Mantou"]],[["口罩","Face mask"],["圍巾","Scarf"]],
+  [["溫泉","Hot spring"],["三溫暖","Sauna"]],[["瑜珈","Yoga"],["皮拉提斯","Pilates"]],[["男朋友","Boyfriend"],["前男友","Ex-boyfriend"]],
+  [["班長","Class leader"],["風紀股長","Discipline monitor"]],[["鞭炮","Firecrackers"],["煙火","Fireworks"]],[["月餅","Mooncake"],["鳳梨酥","Pineapple cake"]],
+  [["颱風","Typhoon"],["地震","Earthquake"]],[["醬油","Soy sauce"],["醋","Vinegar"]],[["蛋糕","Cake"],["麵包","Bread"]],[["耳機","Earphones"],["喇叭","Speaker"]]
+);
+WHOAMI.role.items.push(["老闆","Boss"],["保母","Nanny"],["魔術師","Magician"],["牛仔","Cowboy"],["拳擊手","Boxer"],["廚師","Chef"],["醫生","Doctor"],["舞者","Dancer"],["小偷","Thief"],["空服員","Flight attendant"],["老師","Teacher"]);
+WHOAMI.animal.items.push(["老虎","Tiger"],["兔子","Rabbit"],["烏龜","Turtle"],["章魚","Octopus"],["孔雀","Peacock"],["蝙蝠","Bat"],["蝸牛","Snail"],["鱷魚","Crocodile"],["北極熊","Polar bear"],["鴿子","Pigeon"]);
+WHOAMI.food.items.push(["豆漿","Soy milk"],["燒餅油條","Shaobing & youtiao"],["胡椒餅","Pepper bun"],["車輪餅","Wheel cake"],["麻糬","Mochi"],["冰淇淋","Ice cream"],["爆米花","Popcorn"],["榴槤","Durian"],["西瓜","Watermelon"],["香菜","Cilantro"]);
+WHOAMI.thing.items.push(["垃圾車","Garbage truck"],["紅綠燈","Traffic light"],["捷運","MRT"],["夜市","Night market"],["廟","Temple"],["溫泉","Hot spring"],["彩虹","Rainbow"],["月亮","Moon"],["眼鏡","Glasses"],["枕頭","Pillow"]);
+
+/* ================= 紙條劇場 Line-pull improv ================= */
+const STORY_LINES = [
+  ["我其實是你失散多年的兄弟。","I'm actually your long-lost brother."],["這已經是我今天第三杯珍奶了。","This is my third bubble tea today."],
+  ["你不要再說了，我都懂。","Stop, I understand everything."],["我昨天夢到你，夢裡你是一隻鴨子。","I dreamed about you — you were a duck."],
+  ["其實我是外星人派來的。","Actually, aliens sent me."],["等一下，我家瓦斯好像沒關。","Wait, I think I left the gas on."],
+  ["這件事我只跟你一個人說喔。","I'm only telling you this."],["我媽說不能跟你玩。","My mom said I can't play with you."],
+  ["你這樣我真的會哭。","If you keep this up I'll cry."],["我可以分期付款嗎？","Can I pay in installments?"],
+  ["好啦好啦，都是我的錯。","Fine, fine, it's all my fault."],["你身上怎麼有鹹酥雞的味道？","Why do you smell like popcorn chicken?"],
+  ["我覺得我們應該分手。","I think we should break up."],["恭喜你，你被錄取了！","Congratulations, you're hired!"],
+  ["這不是我第一次被雷打到。","This isn't the first time I've been struck by lightning."],["阿嬤說今天要早點回家。","Grandma says come home early tonight."],
+  ["我的貓不喜歡你。","My cat doesn't like you."],["拜託，再給我五分鐘。","Please, just five more minutes."],
+  ["我已經三天沒洗頭了。","I haven't washed my hair in three days."],["你知道我花了多少錢嗎？","Do you know how much I spent?"],
+  ["小心！你後面有人！","Watch out! Someone's behind you!"],["我今天要宣布一件大事。","I have a big announcement today."],
+  ["這個味道……是榴槤嗎？","That smell... is it durian?"],["我不是胖，我是可愛。","I'm not chubby, I'm cute."],
+  ["我把你的秘密告訴大家了。","I told everyone your secret."],["我們來跳舞吧！","Let's dance!"],
+  ["其實我一直都喜歡你。","Actually, I've always liked you."],["這個月的薪水已經花完了。","This month's paycheck is already gone."],
+  ["我剛中了發票！","I just won the receipt lottery!"],["垃圾車來了，快跑！","The garbage truck is here — run!"],
+  ["我需要一個擁抱。","I need a hug."],["這是陰謀，一切都是陰謀！","It's a conspiracy — all of it!"],
+  ["你可以幫我按讚嗎？","Can you like my post?"],["我發誓，這次是真的。","I swear, this time it's real."],
+  ["你的鞋子是不是穿反了？","Are your shoes on the wrong feet?"],["我們被困在電梯裡了。","We're stuck in the elevator."],
+  ["等等，我先拍照打卡。","Wait, let me post a photo first."],["我要辭職去賣雞排。","I'm quitting to sell fried chicken."],
+  ["你怎麼知道我的密碼？","How do you know my password?"],["我小時候是童星。","I was a child star."],
+  ["這是我阿公留給我的。","My grandpa left this to me."],["別看我，我在減肥。","Don't look at me, I'm on a diet."]
+];
+/* 故事劇本：每句旁白 [中文, English, 誰說]  n=輪流的下一位  b=兩人一起  x=結尾 */
+const STORY_TALES = [
+ {t:["夜市約會","Night-market date"],beats:[
+  ["你們第一次約會來到夜市，他買了一支烤玉米，深情地看著你說：","On your first date at the night market, they hand you grilled corn, gaze into your eyes and say:","n"],
+  ["你害羞地低下頭，小聲回答：","You look down shyly and whisper:","n"],
+  ["這時，前任突然出現在雞排攤前，大喊：","Suddenly your ex appears at the chicken stand and yells:","n"],
+  ["你嚇到玉米都掉了，只好說：","You drop the corn in shock and can only say:","n"],
+  ["雞排老闆探出頭，語重心長地說：","The chicken vendor leans out and says wisely:","n"],
+  ["最後，兩人牽起手，異口同聲地說：","Finally, holding hands, you both say together:","b"]]},
+ {t:["魔鬼面試","Job interview from hell"],beats:[
+  ["你走進面試會議室，老闆推了推眼鏡說：","You enter the interview room. The boss adjusts their glasses and says:","n"],
+  ["你緊張地自我介紹：","You nervously introduce yourself:","n"],
+  ["老闆問你為什麼想來這間公司，你回答：","The boss asks why you want this job. You answer:","n"],
+  ["老闆的手機突然響了，是他媽媽。老闆接起來說：","The boss's phone rings — it's their mom. The boss answers:","n"],
+  ["掛掉電話後，老闆宣布結果：","After hanging up, the boss announces the result:","n"],
+  ["你感動得站起來說：","Moved, you stand up and say:","n"]]},
+ {t:["摩天輪求婚","Ferris-wheel proposal"],beats:[
+  ["摩天輪轉到最高點，他突然單膝跪下說：","At the top of the Ferris wheel, they drop to one knee and say:","n"],
+  ["你摀住嘴巴，眼眶泛淚地說：","You cover your mouth, eyes tearing up:","n"],
+  ["摩天輪突然卡住了！廣播傳來工作人員的聲音：","The wheel gets stuck! A staff announcement says:","n"],
+  ["他看著窗外，認真地說：","Looking out the window, they say seriously:","n"],
+  ["你深吸一口氣，給出最後的答案：","You take a deep breath and give your answer:","n"],
+  ["底下圍觀的路人一起大喊：","The crowd below shouts together:","b"]]},
+ {t:["颱風停電夜","Typhoon blackout"],beats:[
+  ["颱風夜突然停電，室友點起蠟燭說：","The power goes out on a typhoon night. Your roommate lights a candle and says:","n"],
+  ["你緊張地抓住室友的手說：","You grab their hand nervously:","n"],
+  ["門外傳來敲門聲，一個全身濕透的外送員說：","A knock — a soaking-wet delivery rider says:","n"],
+  ["你打開外送袋看了一眼，說：","You peek into the delivery bag and say:","n"],
+  ["室友突然坦白一個秘密：","Your roommate suddenly confesses a secret:","n"],
+  ["電來了！兩人同時大叫：","The power's back! You both scream:","b"]]},
+ {t:["過年回阿嬤家","New Year at Grandma's"],beats:[
+  ["過年回阿嬤家，阿嬤一開門就說：","You visit Grandma for New Year. She opens the door and says:","n"],
+  ["你遞上紅包，笑著說：","You hand her a red envelope and smile:","n"],
+  ["阿姨湊過來問：「有沒有對象啊？」你回答：","Auntie asks, “Seeing anyone?” You reply:","n"],
+  ["阿嬤聽完，放下筷子說：","Grandma puts down her chopsticks and says:","n"],
+  ["表弟突然站上椅子宣布：","Your little cousin jumps on a chair and announces:","n"],
+  ["全家人舉杯，一起說：","The whole family raises a glass:","b"]]},
+ {t:["捷運巧遇","MRT encounter"],beats:[
+  ["捷運上人擠人，你不小心踩到旁邊的人。對方轉頭說：","On a packed MRT you step on someone's foot. They turn and say:","n"],
+  ["你趕快道歉：","You quickly apologize:","n"],
+  ["對方突然認出你，驚訝地說：","They suddenly recognize you:","n"],
+  ["廣播響起「下一站，台北車站」，你鼓起勇氣說：","“Next stop, Taipei Main Station.” You gather your courage:","n"],
+  ["車門打開前，對方最後說了一句：","Before the doors open, they say one last thing:","n"]]},
+ {t:["火星任務","Mission to Mars"],beats:[
+  ["太空船即將降落火星，艦長按下通話鍵說：","About to land on Mars, the captain hits the intercom:","n"],
+  ["副艦長盯著雷達大喊：","The first officer stares at the radar and shouts:","n"],
+  ["艙門外出現一個外星人，牠開口第一句話是：","An alien appears outside. Its first words are:","n"],
+  ["艦長代表全人類回應：","The captain replies on behalf of humanity:","n"],
+  ["外星人聽完，感動地說：","The alien is moved and says:","n"],
+  ["兩人對著地球直播，一起說：","Live to Earth, you both say:","b"]]},
+ {t:["珍奶失竊案","The bubble-tea heist"],beats:[
+  ["豪宅裡最後一杯珍奶不見了！偵探推開門說：","The mansion's last bubble tea is gone! The detective bursts in:","n"],
+  ["嫌犯冷笑一聲：","The suspect smirks:","n"],
+  ["偵探拿出關鍵證物：一根吸管，說：","The detective holds up the key evidence — a straw:","n"],
+  ["嫌犯臉色一變，崩潰大喊：","The suspect breaks down and screams:","n"],
+  ["管家突然從窗簾後面走出來說：","The butler steps out from behind the curtain:","n"],
+  ["偵探合上筆記本，說出結論：","The detective closes the notebook and concludes:","n"]]},
+ {t:["奧客來了","The customer from hell"],beats:[
+  ["便利商店半夜三點，一位客人衝進來說：","3 a.m. at a convenience store. A customer bursts in:","n"],
+  ["店員冷靜地回答：","The clerk calmly replies:","n"],
+  ["客人拍桌子，要求見店長。店長出現了，他說：","The customer demands the manager. The manager appears:","n"],
+  ["客人突然哭了出來，說：","The customer bursts into tears:","n"],
+  ["店員遞上一張衛生紙，溫柔地說：","The clerk hands over a tissue and says gently:","n"],
+  ["兩人抱在一起，同時說：","You hug and say at the same time:","b"]]},
+ {t:["婚禮致詞","Wedding toast"],beats:[
+  ["婚禮上，伴郎拿起麥克風說：","At the wedding, the best man takes the mic:","n"],
+  ["新娘的爸爸站起來接著說：","The bride's father stands up and adds:","n"],
+  ["新郎緊張地握著新娘的手說：","The groom nervously holds the bride's hand:","n"],
+  ["新娘看著新郎，深情回應：","The bride looks at the groom and replies:","n"],
+  ["這時，一位不速之客推開大門說：","Then an uninvited guest pushes open the doors:","n"],
+  ["全場賓客一起舉杯大喊：","All the guests raise their glasses and shout:","b"]]}
+];
+
+const STORY_BRIDGES = [
+  ["對方聽完，臉色一變說：","Hearing that, their face changes:"],["你的媽媽剛好走進來，她說：","Your mom walks in and says:"],
+  ["對方沉默了三秒，終於開口：","After three seconds of silence, they finally say:"],["隔壁桌的人轉過頭說：","The person at the next table turns and says:"],
+  ["原來這一切都是誤會！對方解釋：","It was all a misunderstanding! They explain:"],["對方突然單膝跪下說：","They suddenly drop to one knee:"],
+  ["警察衝進來大喊：","The police burst in shouting:"],["對方深吸一口氣，用台語說：","They take a deep breath and say in Taiwanese:"],
+  ["十年後你們再次相遇，對方第一句話是：","Ten years later you meet again. Their first words:"],["對方偷偷傳了一則訊息給你，上面寫著：","They secretly text you:"],
+  ["全場安靜，只有一個人小聲地說：","The room goes silent; one person whispers:"],["對方笑著笑著就哭了，說：","They laugh, then start crying:"],
+  ["你的老闆在後面聽到了，他說：","Your boss overheard and says:"],["對方拿起麥克風，對全世界宣布：","They grab a mic and announce to the world:"],
+  ["外星人降落了，牠說：","An alien lands and says:"],["對方不服氣，回嘴：","Unconvinced, they fire back:"],
+  ["你的前任從人群中走出來說：","Your ex steps out of the crowd:"],["對方用盡最後一口氣說：","With their last breath, they say:"],
+  ["阿嬤從廚房探出頭說：","Grandma pokes her head out of the kitchen:"],["對方翻了個白眼說：","They roll their eyes:"],
+  ["這時手機響了，你接起來說：","Your phone rings. You answer:"],["對方決定說出埋藏多年的秘密：","They finally reveal a long-kept secret:"],
+  ["家裡的狗突然開口說話了：","The family dog suddenly speaks:"],["對方冷靜地推了推眼鏡說：","They calmly adjust their glasses:"],
+  ["所有人都看著你，你只好說：","Everyone stares at you, so you say:"],["對方緊緊抓住你的手說：","They grab your hand tightly:"],
+  ["對方想了想，給你一個建議：","They think, then offer some advice:"],["婚禮司儀拿起麥克風說：","The wedding MC picks up the mic:"],
+  ["對方湊到你耳邊，小聲地說：","They lean in and whisper:"],["對方氣到拍桌：","They slam the table:"]
+];
+
+/* ================= 工具 Utils ================= */
+const $ = s => document.querySelector(s);
+const app = $('#app');
+let showEN = true;
+try{ const v = localStorage.getItem('showEN'); if(v!==null) showEN = v==='1'; }catch(e){}
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const T = (zh,en) => esc(zh) + (showEN && en ? `<span class="en">${esc(en)}</span>` : '');
+function toggleEN(){ showEN=!showEN; try{localStorage.setItem('showEN',showEN?'1':'0')}catch(e){} syncToggle(); render(); }
+function syncToggle(){ $('#enToggle').setAttribute('aria-pressed', showEN); }
+
+// 同一個字串 → 同一串亂數（讓多台手機算出一樣的結果）
+function seedFrom(str){ let h=1779033703^str.length; for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19} return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return (h^=h>>>16)>>>0}; }
+function rng(str){ let a=seedFrom(str)(); return ()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}; }
+function shuffle(arr,r=Math.random){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
+
+// 不重複抽牌 deck
+// 抽過的紀錄存在手機上，重新整理也不會重複
+let decks={};
+try{ decks=JSON.parse(localStorage.getItem('decks'))||{}; }catch(e){ decks={}; }
+function saveDecks(){ try{localStorage.setItem('decks',JSON.stringify(decks))}catch(e){} }
+function drawFrom(key,items){
+  let d=Array.isArray(decks[key]) ? decks[key].filter(i=>Number.isInteger(i)&&i>=0&&i<items.length) : [];
+  if(!d.length) d=shuffle(items.map((_,i)=>i));
+  const i=d.pop(); decks[key]=d; saveDecks(); return items[i];
+}
+function resetDecks(){ if(!confirm('重置所有題庫？抽過的題目會重新洗回去。\nReset all decks?')) return; decks={}; saveDecks(); alert('已重新洗牌！ Reshuffled!'); }
+function left(key){ return decks[key]?decks[key].length:0; }
+
+let wakeLock=null;
+async function keepAwake(){ try{ if('wakeLock' in navigator && !wakeLock){ wakeLock=await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release',()=>wakeLock=null);} }catch(e){} }
+
+/* ================= 路由 Router ================= */
+const S = { view:'home' };
+function go(v){ S.view=v; clearInterval(S.timerId); closeCover(); location.hash = v==='home' ? '' : v; render(); window.scrollTo(0,0); }
+function render(){ (VIEWS[S.view]||VIEWS.home)(); }
+const backBtn = () => `<button class="back" onclick="go('home')">← 回首頁${showEN?' · Home':''}</button>`;
+const howto = (zh,en) => `<div class="howto">${T(zh,en)}</div>`;
+
+const GAMES = [
+  ['topics','💬','話題抽籤','Conversation cards','兩人或一群人聊天用'],
+  ['tod','🎲','真心話大冒險','Truth or dare','經典派對遊戲'],
+  ['charades','🙌','你比我猜','Charades','60 秒計時比手畫腳'],
+  ['taigi','🗣️','台語空耳','Taiwanese sound-alike','念出來才恍然大悟'],
+  ['story','📜','紙條劇場','Slip theater','旁白配亂抽台詞'],
+  ['undercover','🕵️','誰是臥底','Undercover','每人手機拿到不同詞'],
+  ['whoami','🤔','我是誰','Who am I?','手機舉額頭猜身分'],
+];
+
+const VIEWS = {
+home(){
+  app.innerHTML = `
+  <h1>今天玩什麼？${showEN?'<span class="en">What are we playing?</span>':''}</h1>
+  <p class="lead">選一個遊戲，抽一張就開始。${showEN?'<span class="en">Pick a game and draw a card.</span>':''}</p>
+  <div class="games">
+    ${GAMES.map(g=>`<button class="game" onclick="go('${g[0]}')"><span class="ico">${g[1]}</span><b>${esc(g[2])}${g[0]==='undercover'?'<span class="tag">多機</span>':''}</b><small>${esc(g[4])}${showEN?'<br>'+esc(g[3]):''}</small></button>`).join('')}
+    <button class="game wide" onclick="go('draw')"><span class="ico">🎋</span><span><b>抽籤</b><small>${showEN?'Draw lots · ':''}抽號碼、排順序、分組，可加名字</small></span></button>
+  </div>
+  <div class="row"><button class="btn alt" onclick="resetDecks()">🔄 重置題庫（重新洗牌）${showEN?' · Reset decks':''}</button></div>
+  <p class="note">抽過的題目會記在這支手機上，整副抽完才會重複。${showEN?'<span class="en">Drawn cards are remembered on this phone until the deck runs out.</span>':''}</p>
+  <p class="note">標示「多機」的遊戲：大家輸入同一個房間碼，各自用自己的手機看身分，不需網路連線。${showEN?'<span class="en">“多機” games: everyone enters the same room code on their own phone. No internet needed.</span>':''}</p>`;
+},
+
+/* ---------- 話題抽籤 ---------- */
+topics(){
+  S.tcat = S.tcat || 'ice';
+  const c = TOPICS[S.tcat];
+  const card = S.tcard;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('話題抽籤','Conversation cards')}</h2>
+  ${howto('輪流抽一張，抽到的人先回答，再換其他人分享。','Take turns drawing. The drawer answers first, then others share.')}
+  <div class="chips">${Object.entries(TOPICS).map(([k,v])=>`<button class="chip" aria-pressed="${k===S.tcat}" onclick="S.tcat='${k}';S.tcard=null;render()">${esc(v.zh)}${showEN?' · '+esc(v.en):''}</button>`).join('')}</div>
+  <div class="slip ${card?'drawn':'empty'}" id="slip">
+    <div class="kind">${T(c.zh,'')}</div>
+    <div class="big">${card?T(card[0],card[1]):T('點下面抽一張','Tap below to draw')}</div>
+  </div>
+  <button class="btn" onclick="S.tcard=drawFrom('t-'+S.tcat,TOPICS[S.tcat].items);render()">${card?'下一張':'抽一張'}${showEN?(card?' · Next':' · Draw'):''}</button>
+  <div class="meta"><span>剩 ${left('t-'+S.tcat)||c.items.length} 張</span><span>${showEN?'No repeats until the deck runs out':'抽完才會重複'}</span></div>`;
+},
+
+/* ---------- 真心話大冒險 ---------- */
+tod(){
+  const card=S.todcard;
+  const isT = S.todkind==='truth';
+  app.innerHTML = `${backBtn()}
+  <h2>${T('真心話大冒險','Truth or dare')}</h2>
+  ${howto('輪到的人自己選真心話或大冒險；不想做的題目可以喝一口飲料或換題。','Choose truth or dare. Skip a card by taking a sip or drawing again.')}
+  <div class="slip ${card?('drawn '+(isT?'tod-truth':'tod-dare')):'empty'}">
+    <div class="kind">${card?(isT?T('真心話','Truth'):T('大冒險','Dare')):''}</div>
+    <div class="big">${card?T(card[0],card[1]):T('選一個','Pick one')}</div>
+  </div>
+  <div class="row">
+    <button class="btn" onclick="todDraw('truth')">真心話${showEN?'<br><small>Truth</small>':''}</button>
+    <button class="btn warn" onclick="todDraw('dare')">大冒險${showEN?'<br><small>Dare</small>':''}</button>
+  </div>
+  <div class="row"><button class="btn alt" onclick="todDraw(Math.random()<.5?'truth':'dare')">🎲 讓命運決定${showEN?' · Random':''}</button></div>`;
+},
+
+/* ---------- 你比我猜 ---------- */
+charades(){
+  if(S.ch && S.ch.running) return renderCharadesPlay();
+  if(S.ch && S.ch.done) return renderCharadesDone();
+  S.chcat = S.chcat || 'animal';
+  S.chsec = S.chsec || 60;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('你比我猜','Charades')}</h2>
+  ${howto('一人看手機比動作（不能說話、不能比字），隊友猜。猜對按「答對」，太難就「跳過」。','One person acts it out without words; teammates guess. Tap “Got it” or “Skip”.')}
+  <label class="f">題目類別${showEN?' · Category':''}</label>
+  <div class="chips">${Object.entries(CHARADES).map(([k,v])=>`<button class="chip" aria-pressed="${k===S.chcat}" onclick="S.chcat='${k}';render()">${esc(v.zh)}${showEN?' · '+esc(v.en):''}</button>`).join('')}<button class="chip" aria-pressed="${S.chcat==='mix'}" onclick="S.chcat='mix';render()">全部混合${showEN?' · Mixed':''}</button></div>
+  <label class="f">每回合秒數${showEN?' · Seconds per round':''}</label>
+  <div class="seg">${[45,60,90].map(s=>`<button aria-pressed="${S.chsec===s}" onclick="S.chsec=${s};render()">${s} 秒</button>`).join('')}</div>
+  <button class="btn" onclick="startCharades()">開始${showEN?' · Start':''}</button>`;
+},
+
+/* ---------- 台語挑戰（空耳）---------- */
+taigi(){
+  S.tg = S.tg || {score:0,count:0,card:null,shown:false,mode:'zh'};
+  const g=S.tg, c=g.card;
+  const kong = c ? (g.mode==='en' ? c[1] : c[0]) : null;
+  const cat = c ? TG_CAT[c[6]] : null;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('台語空耳挑戰','Taiwanese sound-alike')}</h2>
+  ${howto('卡片上的字照念出來，聽起來就是一句台語！大聲念、念快一點，猜猜台語在說什麼。不會台語的人也能出題。','Read the card out loud — it sounds like Taiwanese! Say it fast and guess what it means. Anyone can read the card.')}
+  <div class="seg">
+    <button aria-pressed="${g.mode==='zh'}" onclick="tgMode('zh')">國語空耳${showEN?'<br><small>Mandarin sound-alike</small>':''}</button>
+    <button aria-pressed="${g.mode==='en'}" onclick="tgMode('en')">英文空耳${showEN?'<br><small>English sound-alike</small>':''}</button>
+  </div>
+  <div class="slip ${c?'drawn':'empty'}">
+    <div class="kind">${c?T('大聲念出來 👄','Say it out loud'):''}</div>
+    <div class="big" style="${c&&kong.length>8?'':'font-size:2.4rem'}">${c?esc(kong):T('抽第一張','Draw the first card')}</div>
+    ${c?`<div class="note" style="color:inherit;opacity:.65">提示：${esc(cat[0])}${showEN?' · Hint: '+esc(cat[1]):''}</div>`:''}
+    ${c&&g.shown?`<div class="reveal"><div class="tg">${esc(c[2])}</div><div class="rom">${esc(c[3])}</div><div style="margin-top:6px">${T(c[4],c[5])}</div></div>`:''}
+  </div>
+  ${c&&!g.shown?`<button class="btn sun" onclick="S.tg.shown=true;render()">看答案${showEN?' · Show answer':''}</button>`:''}
+  <div class="row">
+    ${c?`<button class="btn" onclick="tgNext(true)">猜對 +1${showEN?'<br><small>Got it</small>':''}</button>`:''}
+    <button class="btn alt" onclick="tgNext(false)">${c?'下一張':'抽一張'}${showEN?(c?'<br><small>Next</small>':' · Draw'):''}</button>
+  </div>
+  <p class="score">猜對 ${g.score} / ${g.count} 張</p>
+  <p class="note">空耳只是近似音，聲調不會完全一樣；台語漢字、台羅僅供參考。${showEN?'<span class="en">Sound-alikes are approximate — tones won\'t match exactly.</span>':''}</p>`;
+},
+
+/* ---------- 我是誰（單機舉額頭）---------- */
+whoami(){
+  if(S.wa && S.wa.done) return renderWADone();
+  S.wacat = S.wacat || 'mix';
+  S.wasec = S.wasec || 60;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('我是誰','Who am I?')}</h2>
+  ${howto('把手機舉在額頭上、螢幕朝外。大家用提示或回答是非題，幫你猜出自己是誰。猜對點右半邊，跳過點左半邊。','Hold the phone on your forehead, screen out. Others give hints or answer yes/no. Tap the right half when correct, left half to skip.')}
+  <label class="f">題目類別${showEN?' · Category':''}</label>
+  <div class="chips">${Object.entries(WHOAMI).map(([k,v])=>`<button class="chip" aria-pressed="${k===S.wacat}" onclick="S.wacat='${k}';render()">${esc(v.zh)}${showEN?' · '+esc(v.en):''}</button>`).join('')}<button class="chip" aria-pressed="${S.wacat==='mix'}" onclick="S.wacat='mix';render()">全部混合${showEN?' · Mixed':''}</button></div>
+  <label class="f">每回合秒數${showEN?' · Seconds per round':''}</label>
+  <div class="seg">${[45,60,90].map(s=>`<button aria-pressed="${S.wasec===s}" onclick="S.wasec=${s};render()">${s} 秒</button>`).join('')}</div>
+  <button class="btn" onclick="startWA()">開始${showEN?' · Start':''}</button>
+  <p class="note">看不到螢幕的話，請朋友幫你按。${showEN?'<span class="en">Can\'t see the screen? Let a friend tap for you.</span>':''}</p>`;
+},
+
+/* ---------- 誰是臥底 ---------- */
+undercover(){ roomGame('uc'); },
+
+/* ---------- 紙條劇場 ---------- */
+story(){
+  const st=stState();
+  if(st.phase==='write') return storyWrite();
+  if(st.phase==='play') return st.mode==='multi' ? storyMulti() : storyPlay();
+  if(st.phase==='end') return storyEnd();
+  const mine=st.lines.length;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('紙條劇場','Slip theater')}</h2>
+  ${howto('主持人念一句旁白（例如「男友突然出現了，他說：」），箭頭指向誰，誰就打開紙條，照上面的台詞念出來。旁白配上亂七八糟的台詞，就是一齣荒謬劇。','The narrator reads a line like “Her boyfriend appears and says:”. Whoever the arrow points to opens a slip and reads it out loud, word for word. Chaos ensues.')}
+  <div class="seg">
+    <button aria-pressed="${st.mode==='single'}" onclick="S.st.mode='single';render()">一支手機${showEN?'<br><small>One phone</small>':''}</button>
+    <button aria-pressed="${st.mode==='multi'}" onclick="S.st.mode='multi';render()">每人一支手機${showEN?'<br><small>Phone each</small>':''}</button>
+  </div>
+  <label class="f">主持方式${showEN?' · Hosting':''}</label>
+  <div class="seg">
+    <button aria-pressed="${st.host!=='free'}" onclick="S.st.host='script';render()">照劇本念${showEN?'<br><small>Scripted</small>':''}</button>
+    <button aria-pressed="${st.host==='free'}" onclick="S.st.host='free';render()">主持人即興${showEN?'<br><small>Host improvises</small>':''}</button>
+  </div>
+  <p class="note" style="margin-top:0">${st.host==='free'?T('像脫口秀：主持人聽完台詞，當場想一句轉場把兩邊接起來。App 會給轉場提示當備胎。','Like a comedy show: the host makes up a bridge after each line. The app offers backup prompts.'):T('新手推薦：App 提供故事旁白，主持人照念就好。','Beginner-friendly: the app gives the narration — just read it.')}</p>
+  ${st.mode==='single'?`
+  <div class="result"><h3>① ${T('大家寫紙條','Everyone writes slips')}</h3>
+    <p class="score" style="text-align:left;margin:0 0 8px">${T(`紙條箱裡有 ${mine} 張`,`${mine} slips in the box`)}</p>
+    <div class="row" style="margin-top:0"><button class="btn" onclick="S.st.phase='write';render()">開始寫紙條${showEN?'<br><small>Write slips</small>':''}</button>
+    ${mine?`<button class="btn alt" onclick="stClear()">清空紙條箱${showEN?'<br><small>Empty box</small>':''}</button>`:''}</div>
+  </div>
+  <div class="result"><h3>② ${T('準備演出','Set up')}</h3>
+    <button class="btn alt" aria-pressed="${st.builtin}" onclick="S.st.builtin=!S.st.builtin;stSave();render()">${st.builtin?'☑':'☐'} 混入內建台詞（${STORY_LINES.length} 張）${showEN?'<br><small>Mix in built-in lines</small>':''}</button>
+    <div class="row">
+      <div><label class="f" for="na">左邊演員${showEN?' · Left':''}</label><input id="na" value="${esc(st.nameA)}" placeholder="選填" oninput="S.st.nameA=this.value"></div>
+      <div><label class="f" for="nb">右邊演員${showEN?' · Right':''}</label><input id="nb" value="${esc(st.nameB)}" placeholder="選填" oninput="S.st.nameB=this.value"></div>
+    </div>
+  </div>
+  <button class="btn sun" onclick="stStart()">開始演出 🎬${showEN?' · Action!':''}</button>
+  <p class="note">${T('一個故事大約用 6～7 張紙條，建議每人寫 2～3 張。抽過的紙條就丟掉。','A story uses about 6–7 slips. Aim for 2–3 each. Used slips are discarded.')}</p>`
+  :`
+  <label class="f" for="src">房間碼（大家一樣）${showEN?' · Room code':''}</label>
+  <div class="inline"><input id="src" value="${esc(st.code)}" maxlength="12" autocapitalize="characters" oninput="S.st.code=this.value.trim().toUpperCase()"><button class="btn alt" onclick="S.st.code=newCode();render()">換一個</button></div>
+  <label class="f">我的角色${showEN?' · My role':''}</label>
+  <div class="seg">
+    <button aria-pressed="${st.role==='A'}" onclick="S.st.role='A';render()">⬅ 左邊演員${showEN?'<br><small>Left</small>':''}</button>
+    <button aria-pressed="${st.role==='N'}" onclick="S.st.role='N';render()">主持人${showEN?'<br><small>Narrator</small>':''}</button>
+    <button aria-pressed="${st.role==='B'}" onclick="S.st.role='B';render()">右邊演員 ➡${showEN?'<br><small>Right</small>':''}</button>
+  </div>
+  <button class="btn sun" onclick="stStart()">開始 🎬${showEN?' · Start':''}</button>
+  <p class="note">${T('多機版每位演員在自己手機上偷看台詞，比較有驚喜；但手機之間不連線，所以只能用內建台詞。要用自己寫的紙條，請選「一支手機」。','Each actor sees their lines privately. Phones don\'t connect, so only built-in lines are available — use “One phone” for your own slips.')}</p>`}`;
+},
+
+/* ---------- 抽籤（號碼制）---------- */
+draw(){
+  const P=pool();
+  app.innerHTML = `${backBtn()}
+  <h2>${T('抽籤','Draw lots')}</h2>
+  ${howto('以號碼為主，名字可填可不填。不玩的號碼按 ✕ 刪掉。','Numbers first, names optional. Tap ✕ to remove a number.')}
+  <label class="f" for="pn">號碼數量${showEN?' · How many numbers':''}</label>
+  <div class="inline"><input id="pn" type="number" inputmode="numeric" min="2" max="99" value="${P.items.length||6}"><button class="btn alt" onclick="poolReset()">重新建立</button></div>
+  <ul class="list pool">${P.items.map(it=>`<li><span class="num">${it.n}</span><input value="${esc(it.name)}" placeholder="名字（選填）${showEN?' Name (optional)':''}" aria-label="${it.n} 號名字" oninput="poolName(${it.n},this.value)"><button class="del" aria-label="刪除 ${it.n} 號" onclick="poolDel(${it.n})">✕</button></li>`).join('')||`<li>${T('名單是空的，按「新增號碼」或「重新建立」。','The list is empty. Add a number or rebuild.')}</li>`}</ul>
+  <div class="row">
+    <button class="btn alt" onclick="poolAdd()">＋ 新增號碼${showEN?'<br><small>Add number</small>':''}</button>
+    <button class="btn alt" aria-pressed="${P.remove}" onclick="pool().remove=!pool().remove;poolSave();render()">${P.remove?'☑':'☐'} 抽中後移出${showEN?'<br><small>Remove when drawn</small>':''}</button>
+  </div>
+  <div class="row">
+    <button class="btn" onclick="doDraw('one')">抽一個${showEN?'<br><small>Pick one</small>':''}</button>
+    <button class="btn alt" onclick="doDraw('order')">排順序${showEN?'<br><small>Order</small>':''}</button>
+  </div>
+  <div class="row">
+    <select id="grp" aria-label="組數">${[2,3,4,5,6].map(n=>`<option value="${n}" ${n===S.grp?'selected':''}>${n} 組</option>`).join('')}</select>
+    <button class="btn alt" onclick="doDraw('group')">分組${showEN?' · Teams':''}</button>
+  </div>
+  <div id="drawOut">${S.drawOut||''}</div>`;
+}
+};
+
+function pool(){
+  if(!S.pool){ try{S.pool=JSON.parse(localStorage.getItem('drawPool'))}catch(e){} }
+  if(!S.pool||!Array.isArray(S.pool.items)) S.pool={items:Array.from({length:6},(_,i)=>({n:i+1,name:''})),remove:false};
+  return S.pool;
+}
+function poolSave(){ try{localStorage.setItem('drawPool',JSON.stringify(S.pool))}catch(e){} }
+function poolReset(){ const n=Math.max(2,Math.min(99,parseInt($('#pn').value)||6)); S.pool={items:Array.from({length:n},(_,i)=>({n:i+1,name:''})),remove:pool().remove}; S.drawOut=''; poolSave(); render(); }
+function poolAdd(){ const P=pool(); const n=P.items.reduce((m,x)=>Math.max(m,x.n),0)+1; P.items.push({n,name:''}); poolSave(); render(); }
+function poolDel(n){ const P=pool(); P.items=P.items.filter(x=>x.n!==n); poolSave(); render(); }
+function poolName(n,v){ const it=pool().items.find(x=>x.n===n); if(it){it.name=v; poolSave();} }
+const lbl = it => `${it.n} 號${it.name?'・'+esc(it.name):''}`;
+function doDraw(mode){
+  const P=pool(); S.grp=+($('#grp')||{}).value||S.grp||2;
+  if(P.items.length<(mode==='one'?1:2)){ S.drawOut=`<div class="result">${T('名單裡的號碼不夠。','Not enough numbers in the list.')}</div>`; render(); return; }
+  const sh=shuffle(P.items);
+  if(mode==='one'){
+    const it=sh[0];
+    S.drawOut=`<div class="slip drawn"><div class="kind">${T('抽中','Picked')}</div><div class="big" style="font-size:3rem">${it.n} 號</div>${it.name?`<div style="font-size:1.4rem">${esc(it.name)}</div>`:''}</div>`;
+    if(P.remove){ P.items=P.items.filter(x=>x.n!==it.n); poolSave(); }
+  }
+  if(mode==='order') S.drawOut=`<div class="result"><h3>${T('順序','Order')}</h3><ol>${sh.map(x=>`<li>${lbl(x)}</li>`).join('')}</ol></div>`;
+  if(mode==='group'){ const n=S.grp; const g=Array.from({length:n},()=>[]); sh.forEach((x,i)=>g[i%n].push(x)); S.drawOut=g.map((m,i)=>`<div class="result"><h3>第 ${i+1} 組${showEN?' · Team '+(i+1):''}</h3>${m.map(lbl).join('、')||'—'}</div>`).join(''); }
+  render();
+}
+
+/* ================= 遊戲邏輯 ================= */
+function todDraw(k){ S.todkind=k; S.todcard=drawFrom('tod-'+k, k==='truth'?TRUTH:DARE); render(); }
+
+function chItems(){ return S.chcat==='mix' ? Object.values(CHARADES).flatMap(v=>v.items) : CHARADES[S.chcat].items; }
+function startCharades(){
+  S.ch={running:true,left:S.chsec,log:[],card:drawFrom('ch-'+S.chcat,chItems())};
+  keepAwake();
+  clearInterval(S.timerId);
+  S.timerId=setInterval(()=>{ S.ch.left--; if(S.ch.left<=0){clearInterval(S.timerId);S.ch.running=false;S.ch.done=true;if(navigator.vibrate)navigator.vibrate([200,100,200]);render();} else { const t=$('#timer'); if(t){t.textContent=S.ch.left; t.classList.toggle('low',S.ch.left<=10);} } },1000);
+  render();
+}
+function chMark(ok){ S.ch.log.push([S.ch.card,ok]); if(navigator.vibrate)navigator.vibrate(ok?40:15); S.ch.card=drawFrom('ch-'+S.chcat,chItems()); render(); }
+function renderCharadesPlay(){
+  const c=S.ch.card, ok=S.ch.log.filter(x=>x[1]).length;
+  app.innerHTML = `
+  <div class="timer ${S.ch.left<=10?'low':''}" id="timer" aria-live="off">${S.ch.left}</div>
+  <p class="score">答對 ${ok}</p>
+  <div class="slip huge drawn"><div class="big">${T(c[0],c[1])}</div></div>
+  <div class="row">
+    <button class="btn alt" onclick="chMark(false)">跳過${showEN?'<br><small>Skip</small>':''}</button>
+    <button class="btn" onclick="chMark(true)">答對${showEN?'<br><small>Got it</small>':''}</button>
+  </div>
+  <div class="row"><button class="btn alt" onclick="clearInterval(S.timerId);S.ch.running=false;S.ch.done=true;render()">提早結束${showEN?' · End round':''}</button></div>`;
+}
+function renderCharadesDone(){
+  const ok=S.ch.log.filter(x=>x[1]).length;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('時間到！','Time\'s up!')}</h2>
+  <div class="timer" style="margin:18px 0">${ok}</div>
+  <p class="score">${T('題答對','correct')}</p>
+  <ul class="list">${S.ch.log.map(([c,o])=>`<li><span>${esc(c[0])}${showEN?' <small style="color:var(--muted)">'+esc(c[1])+'</small>':''}</span><span class="${o?'ok':'no'}">${o?'✓':'跳過'}</span></li>`).join('')||'<li>—</li>'}</ul>
+  <button class="btn" onclick="S.ch=null;startCharades()">下一隊開始${showEN?' · Next team':''}</button>
+  <div class="row"><button class="btn alt" onclick="S.ch=null;render()">換類別${showEN?' · Change category':''}</button></div>`;
+}
+
+function tgPool(){ return S.tg.mode==='en' ? TAIGI.filter(x=>x[1]) : TAIGI; }
+function tgMode(m){ S.tg.mode=m; S.tg.card=null; S.tg.shown=false; render(); }
+function tgNext(ok){ const g=S.tg; if(g.card){g.count++; if(ok)g.score++;} g.card=drawFrom('taigi-'+g.mode,tgPool()); g.shown=false; render(); }
+
+/* 我是誰：額頭模式 */
+function waItems(){ return S.wacat==='mix' ? Object.values(WHOAMI).flatMap(v=>v.items) : WHOAMI[S.wacat].items; }
+function startWA(){
+  keepAwake(); clearInterval(S.timerId);
+  S.wa={left:S.wasec,log:[],card:null,done:false};
+  let n=3;
+  $('#coverHost').innerHTML=`<div class="hs"><div class="hs-word" id="hscd">${n}</div><div class="hs-top">${T('舉到額頭，螢幕朝外','Forehead, screen out')}</div></div>`;
+  S.timerId=setInterval(()=>{ n--; if(n>0){ const e=$('#hscd'); if(e) e.textContent=n; return; }
+    clearInterval(S.timerId);
+    S.wa.card=drawFrom('wa-'+S.wacat,waItems()); renderWAPlay();
+    S.timerId=setInterval(()=>{ S.wa.left--; if(S.wa.left<=0){ if(navigator.vibrate)navigator.vibrate([200,100,200]); waEnd(); } else { const t=$('#hst'); if(t) t.textContent=S.wa.left; } },1000);
+  },1000);
+}
+function renderWAPlay(){
+  const c=S.wa.card, ok=S.wa.log.filter(x=>x[1]).length;
+  $('#coverHost').innerHTML=`<div class="hs" role="dialog" aria-modal="true">
+    <div class="hs-top"><span id="hst">${S.wa.left}</span> 秒 · 猜對 ${ok}</div>
+    <div class="hs-word"><div>${T(c[0],c[1])}</div></div>
+    <button class="hs-zone skip" onclick="waMark(false)">跳過${showEN?' · Skip':''}</button>
+    <button class="hs-zone ok" onclick="waMark(true)">猜對${showEN?' · Got it':''}</button>
+    <button class="hs-end" onclick="waEnd()" aria-label="結束">✕</button>
+  </div>`;
+}
+function waMark(ok){ S.wa.log.push([S.wa.card,ok]); if(navigator.vibrate)navigator.vibrate(ok?40:15); S.wa.card=drawFrom('wa-'+S.wacat,waItems()); renderWAPlay(); }
+function waEnd(){ clearInterval(S.timerId); closeCover(); S.wa.done=true; render(); }
+function renderWADone(){
+  const ok=S.wa.log.filter(x=>x[1]).length;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('時間到！','Time\'s up!')}</h2>
+  <div class="timer" style="margin:18px 0">${ok}</div>
+  <p class="score">${T('題猜對','correct')}</p>
+  <ul class="list">${S.wa.log.map(([c,o])=>`<li><span>${esc(c[0])}${showEN?' <small style="color:var(--muted)">'+esc(c[1])+'</small>':''}</span><span class="${o?'ok':'no'}">${o?'✓':'跳過'}</span></li>`).join('')||'<li>—</li>'}</ul>
+  <button class="btn" onclick="startWA()">換下一個人${showEN?' · Next player':''}</button>
+  <div class="row"><button class="btn alt" onclick="S.wa=null;render()">換類別${showEN?' · Change category':''}</button></div>`;
+}
+
+
+/* ---------- 紙條劇場 logic ---------- */
+function stState(){
+  if(!S.st){ let saved={}; try{saved=JSON.parse(localStorage.getItem('storyBox'))||{}}catch(e){}
+    S.st={phase:'setup',mode:'single',lines:Array.isArray(saved.lines)?saved.lines:[],builtin:saved.builtin!==false,nameA:'',nameB:'',code:newCode(),role:'A'}; }
+  return S.st;
+}
+function stSave(){ try{localStorage.setItem('storyBox',JSON.stringify({lines:S.st.lines,builtin:S.st.builtin}))}catch(e){} }
+function stClear(){ if(confirm('清空所有紙條？ Empty the box?')){ S.st.lines=[]; stSave(); render(); } }
+function stNameRaw(side){ const st=S.st, n=side==='A'?st.nameA:st.nameB; return n||(side==='A'?'左邊':'右邊'); }
+function stName(side){ const st=S.st, n=side==='A'?st.nameA:st.nameB; return n?esc(n):(side==='A'?'左邊':'右邊')+(showEN?(side==='A'?' · Left':' · Right'):''); }
+function storyWrite(){
+  const st=S.st;
+  app.innerHTML = `<button class="back" onclick="S.st.phase='setup';render()">← 回設定${showEN?' · Back':''}</button>
+  <h2>${T('寫紙條','Write slips')}</h2>
+  ${howto('寫一句等一下會被「別人」照念的台詞。越無厘頭、越肉麻、越日常都好，例如「廁所沒紙了」。放進去後內容不會顯示，寫完把手機交給下一位。','Write a line someone else will read out loud, like “We’re out of toilet paper.” It stays hidden once added — then pass the phone.')}
+  <label class="f" for="stIn">台詞${showEN?' · Line':''}</label>
+  <textarea id="stIn" maxlength="80" style="min-height:96px" placeholder="例如：廁所沒紙了。"></textarea>
+  <button class="btn" style="margin-top:10px" onclick="stAdd()">放進紙條箱 📥${showEN?' · Add':''}</button>
+  <p class="score" id="stCount" aria-live="polite">${T(`紙條箱裡有 ${st.lines.length} 張`,`${st.lines.length} slips in the box`)}</p>
+  <button class="btn alt" onclick="S.st.phase='setup';render()">大家都寫好了 ✓${showEN?' · Everyone\'s done':''}</button>`;
+  $('#stIn').focus();
+}
+function stAdd(){
+  const el=$('#stIn'), v=el.value.trim(); if(!v) return;
+  S.st.lines.push(v); stSave(); el.value=''; el.focus();
+  const n=S.st.lines.length;
+  $('#stCount').innerHTML=`✓ ${T(`放進去了！紙條箱裡有 ${n} 張`,`Added! ${n} slips in the box`)}`;
+}
+function stStart(){
+  const st=S.st;
+  st.script=[]; st.lastA=null; st.lastB=null; st.fresh=null;
+  if(st.mode==='single'){
+    const pool=st.lines.map(x=>[x,'',1]).concat(st.builtin?STORY_LINES:[]);
+    if(pool.length<6){ alert('紙條至少要 6 張，可以多寫幾張或混入內建台詞。\nAdd at least 6 slips, or mix in built-in lines.'); return; }
+    st.pool=shuffle(pool);
+  } else {
+    const deck=shuffle(STORY_LINES,rng('st|'+st.code));
+    st.mine=st.role==='N'?[]:deck.filter((_,i)=>i%2===(st.role==='A'?0:1));
+    st.mi=0;
+  }
+  st.phase='play'; keepAwake();
+  if(st.host==='free'){ st.tale={t:['即興主持','Improvised'],beats:[]}; st.bi=0; st.need=[]; st.speaking=[]; st.cur=null; st.hint=drawFrom('st-br',STORY_BRIDGES); st.lastA=null; st.lastB=null; st.script.push({who:'T',t:st.tale.t}); render(); }
+  else stNewTale();
+}
+function stHint(){ S.st.hint=drawFrom('st-br',STORY_BRIDGES); render(); }
+function stPoint(sides,useHint){
+  const st=S.st; if(st.need.length) return;
+  st.cur = useHint ? st.hint : null;
+  st.script.push({who:'N',t: useHint ? st.hint : ['（主持人即興）','(host improvises)']});
+  st.speaking=sides; st.need = st.mode==='multi' ? [] : sides.slice();
+  st.hint=drawFrom('st-br',STORY_BRIDGES); st.fresh='E'; render();
+}
+function freeNarratorHTML(){
+  const st=S.st, sp=st.speaking||[], waiting=st.need.length>0;
+  const who = sp.length===2 ? T('兩個人一起','Both of you') : sp.length ? `<b>${stName(sp[0])}</b>` : '';
+  return `<div class="mc">
+    <div class="kind">🎙️ ${T('主持人即興','Host improvises')}</div>
+    <div class="ev ${st.fresh==='E'?'drawn':''}">${st.cur?T(st.cur[0],st.cur[1]):`<span style="opacity:.6">${sp.length?T('（主持人自己接了一句）','(the host made up a bridge)'):T('先起個頭設定情境，再指定誰先開紙條','Set the scene, then pick who opens first')}</span>`}</div>
+    ${sp.length?`<div class="arrow" aria-live="polite"><span class="${sp.includes('A')?'on':''}">⬅</span><small>${T('換這位念紙條','Read your slip')}<br>${who}</small><span class="${sp.includes('B')?'on':''}">➡</span></div>`:''}
+    ${waiting?`<button class="btn alt" disabled>等 ${st.need.map(stName).join('、')} 打開紙條…</button>`:`
+      <div class="hint"><span>💡 ${T('轉場提示','Bridge idea')}：${T(st.hint[0],st.hint[1])}</span><button class="chip" onclick="stHint()">換一個</button></div>
+      <label class="f" style="margin-top:10px">${T('接下來誰念？','Who reads next?')}</label>
+      <div class="row" style="margin-top:4px">
+        <button class="btn" onclick="stPoint(['A'],S.st.useHint)">⬅ 左邊</button>
+        <button class="btn alt" onclick="stPoint(['A','B'],S.st.useHint)">一起</button>
+        <button class="btn" onclick="stPoint(['B'],S.st.useHint)">右邊 ➡</button>
+      </div>
+      <button class="chip" style="margin-top:10px" aria-pressed="${!!st.useHint}" onclick="S.st.useHint=!S.st.useHint;render()">${st.useHint?'☑':'☐'} ${T('我要照念這句提示','I’ll read this prompt')}</button>`}
+  </div>`;
+}
+function stNewTale(){
+  const st=S.st;
+  st.tale=drawFrom('st-tale',STORY_TALES); st.bi=-1; st.need=[]; st.turn=Math.random()<.5?'A':'B'; st.lastA=null; st.lastB=null;
+  st.script.push({who:'T',t:st.tale.t});
+  render();
+}
+function stNext(){
+  const st=S.st;
+  if(st.need.length) return;
+  st.bi++;
+  const beat=st.tale.beats[st.bi];
+  if(!beat){ st.fresh=null; render(); return; }
+  st.script.push({who:'N',t:[beat[0],beat[1]]});
+  if(beat[2]==='b'){ st.need=['A','B']; }
+  else { st.need=[st.turn]; st.turn=st.turn==='A'?'B':'A'; }
+  if(st.mode==='multi') st.need=[]; // 多機：主持人手機不等演員
+  st.speaking = beat[2]==='b' ? ['A','B'] : [st.turn==='A'?'B':'A'];
+  st.fresh='E'; render();
+}
+function stPull(side){
+  const st=S.st;
+  if(!st.need.includes(side)) return;
+  if(!st.pool.length){ alert('紙條用完了！ Out of slips!'); stEnd(); return; }
+  const line=st.pool.pop(); st['last'+side]=line;
+  st.script.push({who:side,line});
+  st.need=st.need.filter(x=>x!==side);
+  st.fresh=side; if(navigator.vibrate)navigator.vibrate(20); render();
+}
+function stEnd(){ S.st.phase='end'; render(); }
+const lineT = l => l[2] ? esc(l[0]) : T(l[0],l[1]);
+function narratorHTML(){
+  if(S.st.host==='free') return freeNarratorHTML();
+  const st=S.st, beat=st.tale.beats[st.bi], done=st.bi>=st.tale.beats.length, sp=st.speaking||[];
+  const waiting=st.need.length>0;
+  const who = sp.length===2 ? T('兩個人一起','Both of you') : sp.length ? `<b>${stName(sp[0])}</b>` : '';
+  let btn;
+  if(done) btn=`<div class="row" style="margin-top:0"><button class="btn sun" onclick="stNewTale()">下一個故事 ▶${showEN?'<br><small>Next story</small>':''}</button><button class="btn alt" onclick="stEnd()">看完整劇本${showEN?'<br><small>Full script</small>':''}</button></div>`;
+  else if(waiting) btn=`<button class="btn alt" disabled>等 ${st.need.map(stName).join('、')} 抽紙條…${showEN?'<br><small>Waiting for the slip</small>':''}</button>`;
+  else btn=`<button class="btn sun" onclick="stNext()">${st.bi<0?'開始念旁白 ▶':'下一句旁白 ▶'}${showEN?(st.bi<0?'<br><small>Start</small>':'<br><small>Next line</small>'):''}</button>`;
+  return `<div class="mc">
+    <div class="kind">🎙️ ${T('主持人念','Narrator reads')} · 《${esc(st.tale.t[0])}》${showEN?' '+esc(st.tale.t[1]):''}</div>
+    <div class="ev ${st.fresh==='E'?'drawn':''}">${done?T('全劇終 🎬','The end'):beat?T(beat[0],beat[1]):`<span style="opacity:.55">${T('按下面開始','Tap below to begin')}</span>`}</div>
+    ${beat&&!done?`<div class="arrow" aria-live="polite"><span class="${sp.includes('A')?'on':''}">⬅</span><small>${T('換這位念紙條','Read your slip')}<br>${who}</small><span class="${sp.includes('B')?'on':''}">➡</span></div>`:''}
+    ${btn}
+  </div>`;
+}
+function storyPlay(){
+  const st=S.st;
+  const panel=side=>{ const on=st.need.includes(side), last=st['last'+side];
+    return `<div class="actor ${on?'on':''}">
+      <div class="aname">${side==='A'?'⬅ ':''}${stName(side)}${side==='B'?' ➡':''}</div>
+      <div class="said ${st.fresh===side?'drawn':''}">${last?lineT(last):'<span style="opacity:.45">📜</span>'}</div>
+      <button class="btn ${on?'':'alt'}" ${on?'':'disabled'} onclick="stPull('${side}')">${on?'打開紙條':'還沒輪到'}${showEN?(on?'<br><small>Open slip</small>':'<br><small>Not your turn</small>'):''}</button>
+    </div>`; };
+  app.innerHTML = `${narratorHTML()}
+  <div class="actors">${panel('A')}${panel('B')}</div>
+  <div class="meta"><span>${T(`紙條箱剩 ${st.pool.length} 張`,`${st.pool.length} slips left`)}</span><button class="back" onclick="stEnd()">結束${showEN?' · End':''}</button></div>`;
+}
+function storyMulti(){
+  const st=S.st;
+  if(st.role==='N'){
+    app.innerHTML = `<button class="back" onclick="S.st.phase='setup';render()">← 回設定</button>${narratorHTML()}
+    <p class="note">${T('多機版：念完旁白後，等被箭頭指到的人在自己手機打開紙條念完，再按下一句。','Wait for the pointed actor to read from their phone, then tap next.')}</p>`;
+    return;
+  }
+  const line=st.mine[st.mi], prev=st.mi>0?st.mine[st.mi-1]:null;
+  app.innerHTML = `<button class="back" onclick="S.st.phase='setup';render()">← 回設定</button>
+  <h2>${stName(st.role)}</h2>
+  <div class="slip ${st.fresh==='M'?'drawn':''} ${prev?'':'empty'}"><div class="kind">${T('你的台詞','Your line')}</div><div class="big">${prev?T(prev[0],prev[1]):T('箭頭指到你時再打開','Open when the arrow points at you')}</div></div>
+  ${line?`<button class="btn" onclick="S.st.mi++;S.st.fresh='M';render()">📜 打開下一張${showEN?' · Open next':''}</button>`:`<button class="btn alt" onclick="S.st.phase='setup';render()">台詞用完了，換個房間碼再玩${showEN?' · Out of lines':''}</button>`}
+  <p class="score">${T(`還有 ${st.mine.length-st.mi} 張`,`${st.mine.length-st.mi} left`)}</p>
+  <p class="note">${T('左右兩位演員要用同一個房間碼，台詞才不會重複。','Both actors must use the same room code so lines don\'t repeat.')}</p>`;
+}
+function scriptText(){
+  return S.st.script.map(x=> x.who==='T' ? `\n《${x.t[0]}》` : x.who==='N' ? `🎙️ ${x.t[0]}` : `${x.who==='A'?'⬅':'➡'} ${stNameRaw(x.who)}：「${x.line[0]}」`).join('\n').trim();
+}
+function stCopy(){
+  const txt=scriptText();
+  const done=()=>{ const b=$('#cpy'); if(b) b.textContent='✓ 已複製'; };
+  try{ navigator.clipboard.writeText(txt).then(done,()=>prompt('複製這段劇本：',txt)); }catch(e){ prompt('複製這段劇本：',txt); }
+}
+function storyEnd(){
+  const st=S.st;
+  app.innerHTML = `${backBtn()}
+  <h2>${T('完整劇本 🎬','The full script')}</h2>
+  <div class="result script">${(st.script||[]).map(x=> x.who==='T' ? `<h3>《${esc(x.t[0])}》${showEN?' '+esc(x.t[1]):''}</h3>`
+    : x.who==='N' ? `<p class="sn">🎙️ ${T(x.t[0],x.t[1])}</p>`
+    : `<p class="sl"><b>${x.who==='A'?'⬅':'➡'} ${stName(x.who)}：</b>「${lineT(x.line)}」</p>`).join('')}</div>
+  <button class="btn alt" id="cpy" onclick="stCopy()">📋 複製劇本，貼到群組${showEN?' · Copy script':''}</button>
+  <div class="row"><button class="btn" onclick="stStart()">換兩個人再演${showEN?'<br><small>Next pair</small>':''}</button><button class="btn alt" onclick="S.st.phase='setup';render()">回設定${showEN?'<br><small>Setup</small>':''}</button></div>`;
+}
+
+/* ---------- 房間碼遊戲（多機 / 單機）---------- */
+function newCode(){ const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let s=''; for(let i=0;i<4;i++) s+=ch[Math.floor(Math.random()*ch.length)]; return s; }
+function roomDefaults(){ if(!S.room) S.room={code:newCode(),n:5,seat:1,spies:1,round:1,mode:'multi'}; return S.room; }
+function suggestedSpies(n){ return n>=10?3:n>=6?2:1; }
+
+function ucDeal(r){
+  const R=rng(`uc|${r.code}|${r.round}|${r.n}|${r.spies}`);
+  const pair=UNDERCOVER[Math.floor(R()*UNDERCOVER.length)];
+  const flip=R()<.5;
+  const civ=flip?pair[1]:pair[0], spy=flip?pair[0]:pair[1];
+  const seats=shuffle(Array.from({length:r.n},(_,i)=>i+1),R);
+  const spySeats=seats.slice(0,r.spies).sort((a,b)=>a-b);
+  const starter=1+Math.floor(R()*r.n);
+  return {civ,spy,spySeats,starter,wordFor:s=>spySeats.includes(s)?spy:civ};
+}
+function roomGame(kind){
+  const r=roomDefaults();
+  const isUC=kind==='uc';
+  const title=isUC?T('誰是臥底','Undercover'):T('我是誰','Who am I?');
+  const help=isUC
+    ? howto('大部分人拿到同一個詞，臥底拿到相似但不同的詞（臥底自己不知道）。輪流用一句話描述，然後投票找出臥底。','Most players get the same word; the undercover gets a similar one (and doesn\'t know it). Describe your word in one sentence, then vote.')
+    : howto('每人輸入同一個房間碼和自己的號碼，按「舉到額頭」後把手機面向大家。用是非題問別人，猜出自己是誰。','Everyone enters the same room code and their own number. Tap “Forehead”, hold the phone facing out, and ask yes/no questions to guess who you are.');
+  app.innerHTML = `${backBtn()}
+  <h2>${title}</h2>
+  ${help}
+  ${isUC?`<div class="seg">
+    <button aria-pressed="${r.mode==='multi'}" onclick="S.room.mode='multi';render()">每人一支手機${showEN?'<br><small>One phone each</small>':''}</button>
+    <button aria-pressed="${r.mode==='pass'}" onclick="S.room.mode='pass';render()">傳一支手機${showEN?'<br><small>Pass one phone</small>':''}</button>
+  </div>`:''}
+  ${r.mode==='multi'?`
+  <label class="f" for="rc">房間碼（大家要一樣）${showEN?' · Room code (same for everyone)':''}</label>
+  <div class="inline"><input id="rc" value="${esc(r.code)}" maxlength="12" autocapitalize="characters" oninput="S.room.code=this.value.trim().toUpperCase()"><button class="btn alt" onclick="S.room.code=newCode();S.room.round=1;render()">換一個</button></div>`:''}
+  <div class="row">
+    <div><label class="f" for="rn">總人數${showEN?' · Players':''}</label>
+      <select id="rn" onchange="S.room.n=+this.value;S.room.spies=suggestedSpies(S.room.n);if(S.room.seat>S.room.n)S.room.seat=1;render()">${Array.from({length:isUC?10:12},(_,i)=>i+3).map(n=>`<option ${n===r.n?'selected':''}>${n}</option>`).join('')}</select></div>
+    ${r.mode==='multi'?`<div><label class="f" for="rs">我是幾號${showEN?' · My number':''}</label>
+      <select id="rs" onchange="S.room.seat=+this.value">${Array.from({length:r.n},(_,i)=>i+1).map(n=>`<option ${n===r.seat?'selected':''}>${n}</option>`).join('')}</select></div>`:''}
+    ${isUC?`<div><label class="f" for="rk">臥底數${showEN?' · Undercover':''}</label>
+      <select id="rk" onchange="S.room.spies=+this.value">${[1,2,3].filter(k=>k<r.n-1).map(k=>`<option ${k===r.spies?'selected':''}>${k}</option>`).join('')}</select></div>`:''}
+  </div>
+  <p class="score" style="margin-top:14px">第 ${r.round} 局${showEN?' · Round '+r.round:''}</p>
+  ${r.mode==='multi'
+    ? `<button class="btn" onclick="${isUC?'showMyWord()':'showForehead()'}">${isUC?'看我的詞':'舉到額頭'}${showEN?(isUC?' · See my word':' · Forehead'):''}</button>`
+    : `<button class="btn" onclick="startPass()">開始發詞${showEN?' · Deal words':''}</button>`}
+  <div class="row">
+    <button class="btn alt" onclick="showStarter('${kind}')">誰先開始？${showEN?'<br><small>Who starts?</small>':''}</button>
+    <button class="btn alt" onclick="${isUC?'revealUC()':'revealWA()'}">公布答案${showEN?'<br><small>Reveal all</small>':''}</button>
+  </div>
+  ${isUC?`<div class="row">
+    <select id="pk" aria-label="號碼">${Array.from({length:r.n},(_,i)=>`<option value="${i+1}">${i+1} 號</option>`).join('')}</select>
+    <button class="btn alt" onclick="peekSeat()">查看這號身分${showEN?'<br><small>Check one player</small>':''}</button>
+  </div>`:''}
+  <div class="row"><button class="btn sun" onclick="S.room.round++;S.out='';S.ucPassDeal=null;render()">下一局${showEN?' · Next round':''}</button></div>
+  <p class="note">${r.mode==='multi'?'每支手機的房間碼、總人數、局數都要一樣，號碼各自不同。大家一起按「下一局」。':'依序把手機交給 1 號、2 號…每人看完按「我記住了」再傳下去。'}${showEN?`<span class="en">${r.mode==='multi'?'Room code, player count and round must match on every phone; numbers differ. Tap “Next round” together.':'Pass the phone to player 1, 2, 3… Each taps “Got it” before passing on.'}</span>`:''}</p>
+  <div id="roomOut">${S.out||''}</div>`;
+}
+function showMyWord(){
+  const r=S.room, d=ucDeal(r), w=d.wordFor(r.seat);
+  cover(`<div><div style="opacity:.6">${r.seat} 號的詞${showEN?' · Player '+r.seat:''}</div><div class="big">${T(w[0],w[1])}</div><small>點一下隱藏${showEN?' · Tap to hide':''}</small></div>`, closeCover);
+}
+function startPass(){ S.pass={i:1,d:ucDeal({...S.room,code:'P'+Date.now()})}; S.passKey=S.pass.d; passStep(false); }
+function passStep(showing){
+  const p=S.pass, r=S.room;
+  if(p.i>r.n){ closeCover(); S.ucPassDeal=p.d; S.out=`<div class="result">${T('所有人都看完了，開始輪流描述！','Everyone has seen their word. Start describing!')}</div>`; render(); return; }
+  if(!showing){
+    cover(`<div><div style="opacity:.6">${T('請把手機交給','Pass the phone to')}</div><div class="big">${p.i} 號${showEN?'<span class="en">Player '+p.i+'</span>':''}</div><small>${T('準備好了點一下看詞','Tap when ready to see your word')}</small></div>`, ()=>passStep(true));
+  } else {
+    const w=p.d.wordFor(p.i);
+    cover(`<div><div style="opacity:.6">${p.i} 號${showEN?' · Player '+p.i:''}</div><div class="big">${T(w[0],w[1])}</div><small>${T('記住後點一下，交給下一位','Tap once memorized, then pass on')}</small></div>`, ()=>{ p.i++; passStep(false); });
+  }
+}
+function showStarter(kind){
+  const r=S.room;
+  const d = (kind==='uc' && r.mode==='pass' && S.ucPassDeal) ? S.ucPassDeal : ucDeal(r);
+  S.out=`<div class="result"><h3>${T('從這位開始','Starts with')}</h3><div style="font-family:Huninn,sans-serif;font-size:2rem">${d.starter} 號${showEN?' · Player '+d.starter:''}</div>${T('然後順時針輪流。','Then go clockwise.')}</div>`;
+  render();
+}
+function peekSeat(){
+  const r=S.room, seat=+$('#pk').value;
+  if(r.mode==='pass'&&!S.ucPassDeal){ S.out=`<div class="result">${T('還沒發詞。','Words haven\'t been dealt yet.')}</div>`; render(); return; }
+  if(!confirm(`查看 ${seat} 號的身分？ Check player ${seat}?`)) return;
+  const d=(r.mode==='pass')?S.ucPassDeal:ucDeal(r);
+  const spy=d.spySeats.includes(seat);
+  const left=d.spySeats.length;
+  S.out=`<div class="result"><h3>${seat} 號${showEN?' · Player '+seat:''}</h3><div style="font-family:Huninn,sans-serif;font-size:2rem;color:${spy?'var(--guava)':'var(--teal)'}">${spy?T('是臥底！','Undercover!'):T('是平民','Civilian')}</div><p class="note">${T(`這局共有 ${left} 個臥底。只公布身分，不公布詞。`,`${left} undercover this round. Only the role is shown, not the word.`)}</p></div>`;
+  render();
+}
+function revealUC(){
+  if(!confirm('確定要公布答案？ Reveal the answer?')) return;
+  const r=S.room, d=(r.mode==='pass'&&S.ucPassDeal)?S.ucPassDeal:ucDeal(r);
+  if(r.mode==='pass'&&!S.ucPassDeal){ S.out=`<div class="result">${T('還沒發詞。','Words haven\'t been dealt yet.')}</div>`; render(); return; }
+  S.out=`<div class="result"><h3>${T('平民的詞','Civilian word')}</h3>${T(d.civ[0],d.civ[1])}</div>
+  <div class="result"><h3>${T('臥底的詞','Undercover word')}</h3>${T(d.spy[0],d.spy[1])}</div>
+  <div class="result"><h3>${T('臥底是','Undercover player(s)')}</h3><div style="font-family:Huninn,sans-serif;font-size:1.8rem">${d.spySeats.join('、')} 號</div></div>`;
+  render();
+}
+function cover(html,onTap,dbl){
+  const host=$('#coverHost');
+  host.innerHTML=`<div class="cover" role="dialog" aria-modal="true" tabindex="0">${html}</div>`;
+  const el=host.firstChild; el.focus();
+  if(onTap) el.addEventListener('click',onTap,{once:true});
+  if(dbl) el.addEventListener('dblclick',closeCover,{once:true});
+}
+function closeCover(){ const h=$('#coverHost'); if(h) h.innerHTML=''; }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCover(); });
+
+/* ---------- 啟動 ---------- */
+syncToggle();
+const start=(location.hash||'').slice(1);
+S.view = VIEWS[start] ? start : 'home';
+render();
+window.addEventListener('hashchange',()=>{ const v=(location.hash||'').slice(1)||'home'; if(v!==S.view && VIEWS[v]){ S.view=v; clearInterval(S.timerId); closeCover(); render(); } });
+</script>
+</body>
+</html>
